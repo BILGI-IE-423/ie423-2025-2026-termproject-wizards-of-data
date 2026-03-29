@@ -1,4 +1,10 @@
-# ie423-2025-2026-termproject-wizards-of-data 
-ie423-2025-2026-termproject-wizards-of-data created by GitHub Classroom
+# IE 423 2025-2026 Term Project Proposal
 
-test.
+## Team Members
+- İlke Bakangil
+- Sıla Doğan
+- Avsu Evren
+- Yağmur Battal
+## Dataset
+Dataset: Sephora Products and Skincare Reviews 
+Source: https://www.kaggle.com/datasets/nadyinky/sephora-products-and-skincare-reviews/data
