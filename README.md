@@ -3,7 +3,7 @@
 ## Team Members
 - İlke Bakangil
 - Sıla Doğan
-- Avsu Evren
+- Avsu Evren56
 - Yağmur Battal
 ## Dataset
 Dataset: Sephora Products and Skincare Reviews 
