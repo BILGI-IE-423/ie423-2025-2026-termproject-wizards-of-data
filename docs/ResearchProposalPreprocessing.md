@@ -1,4 +1,4 @@
-# IE 423 Term Project Proposal — A Data-Driven Analysis of Customer Satisfaction in Sephora Products Using Machine Learning and Consumer Review Data
+# IE 423 Term Project Proposal — Customer Satisfaction in Sephora Products: A Data-Driven Machine Learning Approach
 
 ## Team Information
 
