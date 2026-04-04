@@ -1,4 +1,4 @@
-# IE 423 Term Project Proposal — [Project Title]
+# IE 423 Term Project Proposal — A Data-Driven Analysis of Customer Satisfaction in Sephora Products Using Machine Learning and Consumer Review Data
 
 ## Team Information
 
@@ -32,3 +32,27 @@ Detailed instructions on how to obtain and organize the dataset are provided in:
 `data/README.md`
 
 The project assumes that all dataset files are located in this folder with their original file names. Users are required to manually download the dataset before running the scripts.
+
+## Research Questions
+
+### Research Question 1  
+How accurately can product ratings be predicted using customer review sentiment analysis, brand information, content data, and product feature data?
+
+**Explanation:**  
+This question aims to evaluate the extent to which product ratings can be explained and predicted using a combination of structured and unstructured data. Understanding the predictive power of different feature types—such as sentiment extracted from textual reviews, product characteristics, and brand-related information—can provide insights into the key drivers of customer satisfaction. The dataset supports this analysis by combining textual review data with structured product and user-related features, enabling the integration of sentiment analysis with feature-based predictive modeling approaches.
+
+---
+
+### Research Question 2  
+Do users give higher ratings to products when their personal characteristics (skin type, skin tone, and hair color) are aligned with product highlights?
+
+**Explanation:**  
+This question explores whether compatibility between user characteristics and product attributes influences customer satisfaction. By examining the relationship between user profiles and product highlights, the analysis aims to uncover whether personalized product-user alignment leads to higher ratings. The dataset includes both user-related features and product descriptors, making it possible to investigate patterns of preference and evaluate the role of personalization in shaping user experiences.
+
+---
+
+### Research Question 3  
+How does the performance of different machine learning algorithms compare in predicting product ratings, and which model provides the highest predictive accuracy?
+
+**Explanation:**  
+This question focuses on comparing the effectiveness of different machine learning algorithms in predicting product ratings. By applying and evaluating multiple models, the goal is to identify which approaches perform best in capturing the underlying patterns in the data. The dataset’s combination of structured and unstructured features makes it suitable for testing a variety of models, allowing for a comprehensive comparison in terms of predictive accuracy and overall performance.
