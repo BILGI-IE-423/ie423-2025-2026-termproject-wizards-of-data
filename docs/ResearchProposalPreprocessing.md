@@ -75,6 +75,8 @@ Our goal is not only to build a predictive model, but also to interpret product 
 
 Possible challenges include handling missing and noisy data, processing large-scale textual data, constructing meaningful alignment features, managing high-dimensional data after encoding, and preventing overfitting in predictive models.
 
+---
+
 ## Preprocessing Steps
 
 ### Data Integration  
@@ -85,9 +87,7 @@ The preprocessing process began by combining all data sources belonging to the S
 - Both datasets were merged on the `product_id` key using an inner join  
 
 This integration step ensured that each customer review is directly associated with its corresponding product attributes.
-
 ---
-
 ### Initial Data Understanding  
 Before applying any transformations, the dataset structure and quality were examined.
 
@@ -97,9 +97,7 @@ Before applying any transformations, the dataset structure and quality were exam
 - Basic statistics were reviewed to understand value distributions  
 
 This step provided a clear overview of the dataset and highlighted potential issues to address.
-
 ---
-
 ### Data Cleaning and Preparation  
 The dataset was cleaned and prepared using `scripts/02_preprocess_data.py`.
 
@@ -110,9 +108,7 @@ The dataset was cleaned and prepared using `scripts/02_preprocess_data.py`.
 - Duplicate rows were detected and dropped using `.drop_duplicates()`  
 
 These steps ensured consistency and reliability in the dataset before feature generation.
-
 ---
-
 ### Text Processing and Sentiment Analysis  
 Customer reviews were transformed into structured numerical features.
 
@@ -121,9 +117,7 @@ Customer reviews were transformed into structured numerical features.
 - Sentiment polarity scores were computed using the TextBlob library  
 
 This allowed unstructured textual data to be incorporated into predictive modeling.
-
 ---
-
 ### Feature Engineering  
 Additional features were generated to enrich the dataset.
 
@@ -133,9 +127,7 @@ Additional features were generated to enrich the dataset.
 - A user–product alignment feature (e.g., `is_dry_match`) was created by combining product highlights with user skin type  
 
 These engineered features help capture both product characteristics and user preferences.
-
 ---
-
 ### Encoding Categorical Variables  
 Categorical variables were transformed into numerical format.
 
@@ -144,9 +136,7 @@ Categorical variables were transformed into numerical format.
 - The `drop_first=True` parameter was used to avoid multicollinearity  
 
 This step made the dataset suitable for machine learning algorithms.
-
 ---
-
 ### Final Dataset  
 The processed dataset was finalized and saved.
 
