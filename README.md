@@ -39,4 +39,6 @@ ie423-2025-2026-termproject-wizards-of-data/
 ```
 
 ## Installation
+```text
 pip install -r requirements.txt
+```
