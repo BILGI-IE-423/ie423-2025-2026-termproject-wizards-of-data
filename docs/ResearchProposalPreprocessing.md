@@ -74,3 +74,84 @@ Based on our research questions, we will apply predictive modeling methods to ev
 Our goal is not only to build a predictive model, but also to interpret product ratings as indicators of customer satisfaction, identify the most influential factors affecting these ratings, and understand how personalization influences customer satisfaction.
 
 Possible challenges include handling missing and noisy data, processing large-scale textual data, constructing meaningful alignment features, managing high-dimensional data after encoding, and preventing overfitting in predictive models.
+
+## Preprocessing Steps
+
+### Data Integration  
+The preprocessing process began by combining all data sources belonging to the Sephora Products and Skincare Reviews dataset.
+
+- Review files were loaded separately and concatenated into a single dataframe using pandas  
+- Product-level data was loaded from `product_info.csv`  
+- Both datasets were merged on the `product_id` key using an inner join  
+
+This integration step ensured that each customer review is directly associated with its corresponding product attributes.
+
+---
+
+### Initial Data Understanding  
+Before applying any transformations, the dataset structure and quality were examined.
+
+- Dataset shape and dimensionality were checked  
+- Column names and data types were inspected using `.info()`  
+- Missing values were identified using `.isnull().sum()`  
+- Basic statistics were reviewed to understand value distributions  
+
+This step provided a clear overview of the dataset and highlighted potential issues to address.
+
+---
+
+### Data Cleaning and Preparation  
+The dataset was cleaned and prepared using `scripts/02_preprocess_data.py`.
+
+- Relevant columns were selected (review text, rating, brand, ingredients, highlights, user features)  
+- Columns such as `rating_x` and `brand_name_x` were renamed for clarity  
+- The `rating` variable was explicitly converted to numeric using `pd.to_numeric()`  
+- Rows with missing values in `review_text` and `rating` were removed  
+- Duplicate rows were detected and dropped using `.drop_duplicates()`  
+
+These steps ensured consistency and reliability in the dataset before feature generation.
+
+---
+
+### Text Processing and Sentiment Analysis  
+Customer reviews were transformed into structured numerical features.
+
+- Review texts were cleaned using regular expressions (lowercasing and removing non-alphabetic characters)  
+- A cleaned text column (`clean_review`) was created  
+- Sentiment polarity scores were computed using the TextBlob library  
+
+This allowed unstructured textual data to be incorporated into predictive modeling.
+
+---
+
+### Feature Engineering  
+Additional features were generated to enrich the dataset.
+
+- Review length was calculated using word counts  
+- Product-related indicators were extracted from text fields (e.g., "vegan", "clean", "oily") using string matching  
+- Ingredient-based features (e.g., hyaluronic acid, niacinamide) were identified from the ingredients column  
+- A user–product alignment feature (e.g., `is_dry_match`) was created by combining product highlights with user skin type  
+
+These engineered features help capture both product characteristics and user preferences.
+
+---
+
+### Encoding Categorical Variables  
+Categorical variables were transformed into numerical format.
+
+- One-hot encoding was applied using `pd.get_dummies()`  
+- Variables such as brand name, skin type, skin tone, and hair color were encoded  
+- The `drop_first=True` parameter was used to avoid multicollinearity  
+
+This step made the dataset suitable for machine learning algorithms.
+
+---
+
+### Final Dataset  
+The processed dataset was finalized and saved.
+
+- Output file:  
+  `data/processed/cleaned_data.csv`  
+
+- Non-essential columns (e.g., raw text fields) were removed before saving  
+- The dataset is now fully structured and ready for analysis and modeling  
