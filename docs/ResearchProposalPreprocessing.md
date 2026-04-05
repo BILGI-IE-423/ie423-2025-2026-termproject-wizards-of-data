@@ -6,6 +6,7 @@
 - Sıla Doğan
 - Avsu Evren
 - Yağmur Battal
+  
 ## Dataset Description
 
 The dataset used in this project is the *Sephora Products and Skincare Reviews* dataset, obtained from Kaggle (https://www.kaggle.com/datasets/nadyinky/sephora-products-and-skincare-reviews).
@@ -17,6 +18,7 @@ The dataset is particularly valuable as it combines multiple dimensions of consu
 Due to its rich and diverse structure, the dataset is well-suited for both exploratory analysis and predictive modeling, providing a meaningful basis for understanding consumer preferences and evaluating data-driven approaches in the skincare domain.
 
 After initial inspection, the dataset consists of over 8,000 products and approximately 1 million user reviews across multiple related files.
+
 ## Dataset Access
 
 The dataset used in this project is not stored directly in the repository due to its size. It can be downloaded from the following Kaggle link:
