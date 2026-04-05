@@ -1,5 +1,2 @@
-import os
-import pandas as pd
-import re
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-import sys
+pandas
+vaderSentiment
