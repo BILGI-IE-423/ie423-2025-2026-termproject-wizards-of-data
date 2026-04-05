@@ -51,6 +51,6 @@ python scripts/02_preprocess_data.py
 python scripts/03_basic_eda.py
 ```
 > **Note:** Make sure to place the raw dataset files in the `data/raw/` directory before running the scripts.  
-> For detailed instructions, refer to `data/README.md`..
+> For detailed instructions, refer to `data/README.md`.
 ## Proposal Document
 See: [docs/ResearchProposalPreprocessing.md](docs/ResearchProposalPreprocessing.md)
