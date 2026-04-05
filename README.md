@@ -44,3 +44,11 @@ ie423-2025-2026-termproject-wizards-of-data/
 ```text
 pip install -r requirements.txt
 ```
+## Running the Scripts
+```text
+python scripts/01_load_data.py
+python scripts/02_preprocess_data.py
+python scripts/03_basic_eda.py
+```
+## Proposal Document
+See: 
