@@ -50,6 +50,7 @@ python scripts/01_load_data.py
 python scripts/02_preprocess_data.py
 python scripts/03_basic_eda.py
 ```
-Note: The dataset is not included in this repository. To run the scripts, please download the “Sephora Products and Skincare Reviews” dataset from Kaggle and place the extracted files into the data/raw/ directory. Ensure that the file names and folder structure match the expected format.
+> **Note:** Make sure to place the raw dataset files in the `data/raw/` directory before running the scripts.  
+> For detailed instructions, refer to `data/README.md`..
 ## Proposal Document
 See: [docs/ResearchProposalPreprocessing.md](docs/ResearchProposalPreprocessing.md)
