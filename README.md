@@ -37,3 +37,6 @@ ie423-2025-2026-termproject-wizards-of-data/
 └── docs/                                   • Project documentation  
     └── ResearchProposalPreprocessing.md    • Main report including proposal and preprocessing steps
 ```
+
+## Installation
+pip install -r requirements.txt
