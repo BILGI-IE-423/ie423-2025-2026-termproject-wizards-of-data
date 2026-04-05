@@ -1,4 +1,4 @@
-# IE 423 2025-2026 Term Project Proposal
+# IE 423 Term Project Proposal — Customer Satisfaction in Sephora Products: A Data-Driven Machine Learning Approach
 
 ## Team Members
 - İlke Bakangil
