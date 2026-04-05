@@ -13,7 +13,7 @@ os.makedirs(figures_dir, exist_ok=True)
 print("EDA started...")
 
 # =========================================================
-# RQ1 — Feature Group Impact on Rating
+# Feature Group Impact on Rating
 # =========================================================
 
 brand_score = df.filter(like="brand_name_").sum(axis=1)
@@ -57,7 +57,7 @@ plt.savefig(os.path.join(figures_dir, "rq1_feature_group_impact.png"))
 plt.close()
 
 # =========================================================
-# RQ1 — Individual Feature Analysis
+# Individual Feature Analysis
 # =========================================================
 
 all_correlations = df.corr(numeric_only=True)["rating"].sort_values(ascending=False)
@@ -73,7 +73,7 @@ plt.savefig(os.path.join(figures_dir, "rq1_top_individual_features.png"))
 plt.close()
 
 # =========================================================
-# Sentiment Analysis (Detailed)
+# Sentiment Analysis 
 # =========================================================
 
 plt.figure(figsize=(8, 5))
@@ -84,7 +84,7 @@ plt.savefig(os.path.join(figures_dir, "sentiment_distribution.png"))
 plt.close()
 
 # =========================================================
-# RQ2 — User–Product Alignment Impact
+# User–Product Alignment Impact
 # =========================================================
 
 alignment_df = pd.DataFrame({
