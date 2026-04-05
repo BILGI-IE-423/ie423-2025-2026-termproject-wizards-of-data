@@ -9,3 +9,6 @@
 Dataset: Sephora Products and Skincare Reviews 
 
 Source: https://www.kaggle.com/datasets/nadyinky/sephora-products-and-skincare-reviews/data
+
+## Project Objective
+
