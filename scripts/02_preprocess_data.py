@@ -69,19 +69,19 @@ def preprocess_data(data_dir, output_dir):
     df["rating"] = pd.to_numeric(df["rating"], errors="coerce")
     df = df.dropna(subset=["review_text", "rating"])
 
-    # TEXT
+    # Text processing
     df["clean_review"] = df["review_text"].apply(clean_text)
 
-    # SENTIMENT ANALYSIS using VADER
+    # Sentiment analysis using vader
     analyzer = SentimentIntensityAnalyzer()
     df["sentiment_score"] = df["clean_review"].apply(
         lambda x: analyzer.polarity_scores(x)["compound"]
     )
 
-    # REVIEW LENGTH
+    # Review length
     df["review_length"] = df["clean_review"].apply(lambda x: len(x.split()))
 
-    # FEATURES
+    # Feature engineering
     df["is_vegan"] = df["highlights"].str.lower().str.contains("vegan", na=False).astype(int)
     df["is_clean"] = df["highlights"].str.lower().str.contains("clean", na=False).astype(int)
     df["is_oily"] = df["highlights"].str.lower().str.contains("oily", na=False).astype(int)
@@ -89,10 +89,10 @@ def preprocess_data(data_dir, output_dir):
     df["has_hyaluronic"] = df["ingredients"].str.lower().str.contains("hyaluronic", na=False).astype(int)
     df["has_niacinamide"] = df["ingredients"].str.lower().str.contains("niacinamide", na=False).astype(int)
 
-    # PERSONALIZATION
+    # Personalization
     df["skin_type"] = df["skin_type"].fillna("unknown").str.lower()
 
-    # ADVANCED ALIGNMENT FEATURES 
+    # Advanced alignment features 
     highlights = df["highlights"].fillna("").str.lower()
 
     dry_keywords = ["dry", "hydrating", "moisturizing", "nourishing"]
@@ -126,7 +126,7 @@ def preprocess_data(data_dir, output_dir):
         (df["skin_type"] == "sensitive")
     ).astype(int)
 
-    # CATEGORICAL VARIABLES
+    # Handle categorical variables
     df["skin_tone"] = df["skin_tone"].fillna("unknown").astype(str)
     df["hair_color"] = df["hair_color"].fillna("unknown").astype(str)
 
