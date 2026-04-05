@@ -13,6 +13,7 @@ def clean_text(text):
 def preprocess_data(data_dir, output_dir):
     print("--- Preprocessing Data ---")
 
+    # List of review files to be loaded
     review_files = [
         os.path.join(data_dir, "reviews_0-250.csv"),
         os.path.join(data_dir, "reviews_250-500.csv"),
@@ -21,10 +22,12 @@ def preprocess_data(data_dir, output_dir):
         os.path.join(data_dir, "reviews_1250-end.csv")
     ]
 
-    for f in review_files:
+    # Check existence of all review files
+        for f in review_files:
         if not os.path.exists(f):
             raise FileNotFoundError(f"Missing file: {f}")
 
+    # Load and concatenate review datasets 
     df_reviews = pd.concat(
         [pd.read_csv(f, low_memory=False) for f in review_files],
         ignore_index=True
@@ -34,8 +37,9 @@ def preprocess_data(data_dir, output_dir):
     df = pd.merge(df_reviews, df_products, on="product_id")
 
     print("Initial dataset shape (after merging):", df.shape)
-
-    df = df[[
+     
+     # Select relevant columns for analysis
+     df = df[[
         "review_text",
         "rating_x",
         "brand_name_x",
@@ -46,10 +50,10 @@ def preprocess_data(data_dir, output_dir):
         "hair_color"
     ]]
 
-
+    # Standardize column names (lowercase and strip spaces)
     df.columns = df.columns.str.strip().str.lower()
 
-
+    # Rename rating column if needed
     if "rating_x" in df.columns:
       df = df.rename(columns={"rating_x": "rating"})
     elif "rating" not in df.columns:
@@ -61,14 +65,14 @@ def preprocess_data(data_dir, output_dir):
     elif "brand_name" not in df.columns:
       raise ValueError("❌ 'brand_name' column not found!")
 
-
+    # Convert rating to numeric and drop invalid rows
     df["rating"] = pd.to_numeric(df["rating"], errors="coerce")
     df = df.dropna(subset=["review_text", "rating"])
 
     # TEXT
     df["clean_review"] = df["review_text"].apply(clean_text)
 
-    # SENTIMENT
+    # SENTIMENT ANALYSIS using VADER
     analyzer = SentimentIntensityAnalyzer()
     df["sentiment_score"] = df["clean_review"].apply(
         lambda x: analyzer.polarity_scores(x)["compound"]
@@ -100,6 +104,8 @@ def preprocess_data(data_dir, output_dir):
         pattern = "|".join(keywords)
         return text_series.str.contains(pattern, na=False)
         return df
+    
+    # Create matching features based on skin type and product properties
     df["is_dry_match"] = (
         contains_any(highlights, dry_keywords) &
         (df["skin_type"] == "dry")
@@ -120,7 +126,7 @@ def preprocess_data(data_dir, output_dir):
         (df["skin_type"] == "sensitive")
     ).astype(int)
 
-    # CATEGORICAL
+    # CATEGORICAL VARIABLES
     df["skin_tone"] = df["skin_tone"].fillna("unknown").astype(str)
     df["hair_color"] = df["hair_color"].fillna("unknown").astype(str)
 
@@ -130,6 +136,7 @@ def preprocess_data(data_dir, output_dir):
         drop_first=True
     )
 
+    # Remove duplicate rows
     print("Duplicates before:", df.duplicated().sum())
     df = df.drop_duplicates()
     print("Duplicates after:", df.duplicated().sum())
@@ -146,7 +153,8 @@ def preprocess_data(data_dir, output_dir):
 if __name__ == "__main__":
     data_dir = "data/raw"
     output_dir = "data/processed"
-
+    
+    # Run preprocessing pipeline
     df_clean = preprocess_data(data_dir, output_dir)
 
 import pandas as pd
