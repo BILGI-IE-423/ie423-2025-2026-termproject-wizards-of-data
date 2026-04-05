@@ -15,7 +15,7 @@ The objective of this project is to analyze and predict customer satisfaction as
 
 ## Repository Structure
 ```text
-ie423-2025-2026-termproject-wizards-od-data/
+ie423-2025-2026-termproject-wizards-of-data/
 │
 ├── README.md                               • Overview of the project, objectives, and instructions to run the code  
 ├── requirements.txt                        • List of required Python libraries  
