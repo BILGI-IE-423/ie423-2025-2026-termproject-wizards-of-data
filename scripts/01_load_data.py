@@ -8,6 +8,7 @@ def load_data(data_dir: str):
     print("              LOADING DATA")
     print("="*50)
 
+    # List of review CSV files to load
     review_files = [
         os.path.join(data_dir, "reviews_0-250.csv"),
         os.path.join(data_dir, "reviews_250-500.csv"),
@@ -16,21 +17,27 @@ def load_data(data_dir: str):
         os.path.join(data_dir, "reviews_1250-end.csv")
     ]
 
+    # Check if all review files exist
     for f in review_files:
         if not os.path.exists(f):
             print(f"Missing file: {f}")
             sys.exit(1)
 
+    # Load and concatenate all review datasets
     df_reviews = pd.concat(
         [pd.read_csv(f, low_memory=False) for f in review_files],
         ignore_index=True
     )
 
+    # Define product dataset path
     product_path = os.path.join(data_dir, "product_info.csv")
+    
+    # Check if product file exists
     if not os.path.exists(product_path):
         print(" Missing product_info.csv")
         sys.exit(1)
 
+    # Load product dataset
     df_products = pd.read_csv(product_path)
 
     print("Data successfully loaded")
@@ -42,6 +49,7 @@ def print_basic_info(df, name):
     print(f"              {name} DATASET")
     print("="*50)
 
+    # Display dataset shape (rows, columns)
     print("\nShape:")
     print(df.shape)
 
@@ -64,28 +72,32 @@ def print_basic_info(df, name):
 
 
 if __name__ == "__main__":
+    # Get repository root directory (works for script or notebook)
     try:
         repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     except NameError:
         repo_root = os.getcwd()
 
+    # Set working directory to repo root
     os.chdir(repo_root)
 
     data_dir = os.path.join("data", "raw")
     tables_dir = os.path.join("outputs", "tables")
 
+    # Load datasets
     df_reviews, df_products = load_data(data_dir)
 
     print_basic_info(df_reviews, "REVIEWS")
     print_basic_info(df_products, "PRODUCTS")
 
-    #  UNIQUE VALUE ANALYSIS
+    #  UNIQUE VALUE ANALYSIS for selected columns
     columns_to_check = ["skin_type", "skin_tone", "hair_color"]
 
     print("\n" + "="*50)
     print("        UNIQUE VALUE ANALYSIS (REVIEWS/skin_type,skin_tone,hair_color)")
     print("="*50)
 
+    # Loop through selected columns
     for col in columns_to_check:
         print("\n" + "-"*40)
         print(f"Column: {col}")
@@ -97,6 +109,7 @@ if __name__ == "__main__":
             print(f"Total unique values: {len(unique_vals)}")
             print("Values:")
 
+            # Print each unique value
             for val in unique_vals:
                 print(f"  - {val}")
         else:
