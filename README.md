@@ -16,22 +16,22 @@ The objective of this project is to analyze and predict customer satisfaction as
 ## Repository Structure
 
 ```text
-├── README.md                 • Project overview and instructions
-├── requirements.txt          • Python dependencies
+├── README.md                               • Project overview and instructions
+├── requirements.txt                        • Python libraries required to run scripts
 │
-├── data/                     • Dataset storage
-│   ├── raw/                  • Original/unprocessed files or download instructions
-│   ├── processed/            • Cleaned/processed data outputs
-│   └── README.md             • Data sources and notes
+├── data/                                   • Dataset storage
+│   ├── raw/                                • Original/unprocessed files or download instructions
+│   ├── processed/                          • Cleaned/processed dataset
+│   └── README.md                           • How to obtain dataset and dataset description
 │
-├── scripts/                  • Python scripts for project workflow
-│   ├── 01_load_data.py       • Load and combine datasets
-│   ├── 02_preprocess_data.py • Clean, handle missing values, feature engineering
-│   └── 03_basic_eda.py       • Exploratory data analysis
+├── scripts/                                • Python scripts for project workflow
+│   ├── 01_load_data.py                     • Load and combine datasets
+│   ├── 02_preprocess_data.py               • Clean, handle missing values, feature engineering
+│   └── 03_basic_eda.py                     • Exploratory data analysis
 │
-├── outputs/                  • Analysis results
-│   ├── figures/              • Plots and visualizations
-│   ├── tables/               • Summary tables
+├── outputs/                                • Analysis results
+│   ├── figures/                            • Plots and visualizations
+│   ├── tables/                             • Summary tables
 │
-└── docs/                     • Documentation
-    └── ResearchProposalPreprocessing.md   • Preprocessing notes & project proposal
+└── docs/                                   • Documentation
+    └── ResearchProposalPreprocessing.md    • Preprocessing notes & project proposal
