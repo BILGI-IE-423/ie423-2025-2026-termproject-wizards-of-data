@@ -16,8 +16,8 @@ The objective of this project is to analyze and predict customer satisfaction as
 ## Repository Structure
 
 ```text
-├── README.md                 # Project overview and instructions
-├── requirements.txt          # Python dependencies
+├── README.md                 • Project overview and instructions
+├── requirements.txt          • Python dependencies
 │
 ├── data/                     # Dataset storage
 │   ├── raw/                  # Original/unprocessed files or download instructions
