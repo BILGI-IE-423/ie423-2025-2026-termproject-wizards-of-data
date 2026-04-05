@@ -1,4 +1,3 @@
-
 import os
 import pandas as pd
 import re
@@ -47,10 +46,21 @@ def preprocess_data(data_dir, output_dir):
         "hair_color"
     ]]
 
-    df = df.rename(columns={
-        "rating_x": "rating",
-        "brand_name_x": "brand_name"
-    })
+
+    df.columns = df.columns.str.strip().str.lower()
+
+
+    if "rating_x" in df.columns:
+      df = df.rename(columns={"rating_x": "rating"})
+    elif "rating" not in df.columns:
+     raise ValueError("❌ 'rating' column not found!")
+
+
+    if "brand_name_x" in df.columns:
+      df = df.rename(columns={"brand_name_x": "brand_name"})
+    elif "brand_name" not in df.columns:
+      raise ValueError("❌ 'brand_name' column not found!")
+
 
     df["rating"] = pd.to_numeric(df["rating"], errors="coerce")
     df = df.dropna(subset=["review_text", "rating"])
@@ -89,7 +99,7 @@ def preprocess_data(data_dir, output_dir):
     def contains_any(text_series, keywords):
         pattern = "|".join(keywords)
         return text_series.str.contains(pattern, na=False)
-
+        return df
     df["is_dry_match"] = (
         contains_any(highlights, dry_keywords) &
         (df["skin_type"] == "dry")
@@ -130,8 +140,7 @@ def preprocess_data(data_dir, output_dir):
     df.to_csv(output_path, index=False)
 
     print(f"Saved to: {output_path}")
-
-    return df
+   
 
 
 if __name__ == "__main__":
@@ -142,5 +151,6 @@ if __name__ == "__main__":
 
 import pandas as pd
 
-df = pd.read_csv("data/processed/cleaned_data.csv", nrows=5)
-df.head()
+df= pd.read_csv("data/processed/cleaned_data.csv", nrows=5)
+print(df.head())
+
