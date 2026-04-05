@@ -247,6 +247,39 @@ The project follows a structured pipeline:
 
 4. Tables (if any) are stored in:
    `outputs/tables/`
+## Initial Outputs
+
+### Dataset Shape
+After loading the dataset, the reviews data consists of 1,094,411 rows and 19 columns, while the products data contains 8,494 rows and 27 columns.
+
+### Missing Value Summary
+The following variables had missing values:
+**Reviews:**  
+- is_recommended 
+- helpfulness  
+- review_text
+- review_text
+- review_title                
+- skin_tone                   
+- eye_color                   
+- skin_type                   
+- hair_color
+
+**Products:**  
+- rating                 
+- reviews                
+- size                  
+- variation_type        
+- variation_value       
+- variation_desc        
+- ingredients 
+- value_price_usd       
+- sale_price_usd        
+- highlights 
+- secondary_category       
+- tertiary_category  
+- child_max_price       
+- child_min_price 
 
 ### Reproducibility Guarantee
 
