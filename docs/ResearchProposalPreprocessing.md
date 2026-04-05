@@ -77,75 +77,44 @@ Possible challenges include handling missing and noisy data, processing large-sc
 
 ## Preprocessing Steps
 
-### Data Integration  
-The preprocessing process began by combining all data sources belonging to the Sephora Products and Skincare Reviews dataset.
-
-- Review files were loaded separately and concatenated into a single dataframe using pandas  
-- Product-level data was loaded from `product_info.csv`  
-- Both datasets were merged on the `product_id` key using an inner join  
-
-This integration step ensured that each customer review is directly associated with its corresponding product attributes.
+### Step 1 — Loading the Data
+The dataset was loaded using `scripts/01_load_data.py`. The Sephora Products and Skincare Reviews dataset consists of multiple files belonging to a single dataset. Review files were loaded separately and concatenated into a single dataframe using pandas. Product-level data was loaded from `product_info.csv`, and both datasets were merged on the `product_id` key using an inner join. This integration step ensured that each customer review is directly associated with its corresponding product attributes.
 
 ---
-### Initial Data Understanding  
-Before applying any transformations, the dataset structure and quality were examined.
 
-- Dataset shape and dimensionality were checked  
-- Column names and data types were inspected using `.info()`  
-- Missing values were identified using `.isnull().sum()`  
-- Basic statistics were reviewed to understand value distributions  
+### Step 2 — Initial Inspection
+We checked:
+- dataset shape and dimensionality  
+- column names and data types using `.info()`  
+- missing values using `.isnull().sum()`  
+- basic statistical summaries to understand value distributions  
 
 This step provided a clear overview of the dataset and highlighted potential issues to address.
 
 ---
-### Data Cleaning and Preparation  
-The dataset was cleaned and prepared using `scripts/02_preprocess_data.py`.
 
-- Relevant columns were selected (review text, rating, brand, ingredients, highlights, user features)  
-- Columns such as `rating_x` and `brand_name_x` were renamed for clarity  
-- The `rating` variable was explicitly converted to numeric using `pd.to_numeric()`  
-- Rows with missing values in `review_text` and `rating` were removed  
-- Duplicate rows were detected and dropped using `.drop_duplicates()`  
+### Step 3 — Cleaning
+Using `scripts/02_preprocess_data.py`, we:
+- selected relevant variables (review text, rating, brand, ingredients, highlights, user features)  
+- renamed columns such as `rating_x` → `rating` and `brand_name_x` → `brand_name`  
+- converted the `rating` variable to numeric using `pd.to_numeric()`  
+- removed rows with missing values in `review_text` and `rating`  
+- removed duplicate observations using `.drop_duplicates()`  
+- cleaned review text using regular expressions (lowercasing and removing non-alphabetic characters)  
+- generated sentiment scores using the TextBlob library  
+- created additional features such as review length (word count)  
+- extracted product-related indicators (e.g., vegan, clean, oily) from text fields  
+- extracted ingredient-based features (e.g., hyaluronic acid, niacinamide)  
+- created a user–product alignment feature (e.g., `is_dry_match`)  
+- encoded categorical variables (brand name, skin type, skin tone, hair color) using `pd.get_dummies()` with `drop_first=True`  
 
-These steps ensured consistency and reliability in the dataset before feature generation.
-
----
-### Text Processing and Sentiment Analysis  
-Customer reviews were transformed into structured numerical features.
-
-- Review texts were cleaned using regular expressions (lowercasing and removing non-alphabetic characters)  
-- A cleaned text column (`clean_review`) was created  
-- Sentiment polarity scores were computed using the TextBlob library  
-
-This allowed unstructured textual data to be incorporated into predictive modeling.
+These steps ensured that the dataset was cleaned, enriched, and transformed into a format suitable for machine learning.
 
 ---
-### Feature Engineering  
-Additional features were generated to enrich the dataset.
 
-- Review length was calculated using word counts  
-- Product-related indicators were extracted from text fields (e.g., "vegan", "clean", "oily") using string matching  
-- Ingredient-based features (e.g., hyaluronic acid, niacinamide) were identified from the ingredients column  
-- A user–product alignment feature (e.g., `is_dry_match`) was created by combining product highlights with user skin type  
+### Step 4 — Saving Processed Data
+The cleaned and fully processed dataset was saved using `scripts/02_preprocess_data.py` to:
 
-These engineered features help capture both product characteristics and user preferences.
+`data/processed/cleaned_data.csv`
 
----
-### Encoding Categorical Variables  
-Categorical variables were transformed into numerical format.
-
-- One-hot encoding was applied using `pd.get_dummies()`  
-- Variables such as brand name, skin type, skin tone, and hair color were encoded  
-- The `drop_first=True` parameter was used to avoid multicollinearity  
-
-This step made the dataset suitable for machine learning algorithms.
-
----
-### Final Dataset  
-The processed dataset was finalized and saved.
-
-- Output file:  
-  `data/processed/cleaned_data.csv`  
-
-- Non-essential columns (e.g., raw text fields) were removed before saving  
-- The dataset is now fully structured and ready for analysis and modeling  
+Before saving, non-essential columns such as raw text fields were removed, and all variables were structured in a model-ready format. This step ensures reproducibility and allows the dataset to be reused in later stages without repeating preprocessing.
