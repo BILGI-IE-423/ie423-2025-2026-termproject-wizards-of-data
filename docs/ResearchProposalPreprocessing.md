@@ -69,6 +69,6 @@ Then, we will conduct exploratory data analysis to understand the distribution o
 
 Based on our research questions, we will apply predictive modeling methods to evaluate how different feature groups contribute to rating prediction, analyze whether alignment between user characteristics and product attributes leads to higher ratings, and compare the performance of different machine learning models.
 
-Our goal is not only to build a predictive model, but also to identify the most influential factors affecting product ratings and understand how personalization influences customer satisfaction.
+Our goal is not only to build a predictive model, but also to interpret product ratings as indicators of customer satisfaction, identify the most influential factors affecting these ratings, and understand how personalization influences customer satisfaction.
 
 Possible challenges include handling missing and noisy data, processing large-scale textual data, constructing meaningful alignment features, managing high-dimensional data after encoding, and preventing overfitting in predictive models.
