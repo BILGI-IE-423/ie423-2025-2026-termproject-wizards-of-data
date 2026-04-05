@@ -1,9 +1,11 @@
+!pip install vaderSentiment
+
 import os
 import pandas as pd
 import re
-from textblob import TextBlob
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-# Clean review text: lowercase + remove non-alphabetic chars
+# Clean review text
 def clean_text(text):
     text = str(text).lower()
     text = re.sub(r"[^a-zA-Z\s]", "", text)
@@ -13,7 +15,6 @@ def clean_text(text):
 def preprocess_data(data_dir, output_dir):
     print("--- Preprocessing Data ---")
 
-    # Load multiple review files and check existence
     review_files = [
         os.path.join(data_dir, "reviews_0-250.csv"),
         os.path.join(data_dir, "reviews_250-500.csv"),
@@ -22,23 +23,20 @@ def preprocess_data(data_dir, output_dir):
         os.path.join(data_dir, "reviews_1250-end.csv")
     ]
 
-  
     for f in review_files:
         if not os.path.exists(f):
             raise FileNotFoundError(f"Missing file: {f}")
 
-    
     df_reviews = pd.concat(
         [pd.read_csv(f, low_memory=False) for f in review_files],
         ignore_index=True
     )
 
-    # Load product info and merge with reviews
     df_products = pd.read_csv(os.path.join(data_dir, "product_info.csv"))
     df = pd.merge(df_reviews, df_products, on="product_id")
+
     print("Initial dataset shape (after merging):", df.shape)
 
-    # Select and rename relevant columns
     df = df[[
         "review_text",
         "rating_x",
@@ -55,59 +53,84 @@ def preprocess_data(data_dir, output_dir):
         "brand_name_x": "brand_name"
     })
 
-    # Ensure numeric rating and drop missing critical info
     df["rating"] = pd.to_numeric(df["rating"], errors="coerce")
     df = df.dropna(subset=["review_text", "rating"])
 
-    # text cleaning
+    # TEXT
     df["clean_review"] = df["review_text"].apply(clean_text)
 
-    #  Sentiment analysis
+    # SENTIMENT
+    analyzer = SentimentIntensityAnalyzer()
     df["sentiment_score"] = df["clean_review"].apply(
-        lambda x: TextBlob(x).sentiment.polarity
+        lambda x: analyzer.polarity_scores(x)["compound"]
     )
 
-    # review length
+    # REVIEW LENGTH
     df["review_length"] = df["clean_review"].apply(lambda x: len(x.split()))
 
-    # feature engineering
-    df["is_vegan"] = df["highlights"].fillna("").apply(lambda x: int("vegan" in x.lower()))
-    df["is_clean"] = df["highlights"].fillna("").apply(lambda x: int("clean" in x.lower()))
-    df["is_oily"] = df["highlights"].fillna("").apply(lambda x: int("oily" in x.lower()))
+    # FEATURES
+    df["is_vegan"] = df["highlights"].str.lower().str.contains("vegan", na=False).astype(int)
+    df["is_clean"] = df["highlights"].str.lower().str.contains("clean", na=False).astype(int)
+    df["is_oily"] = df["highlights"].str.lower().str.contains("oily", na=False).astype(int)
 
-    df["has_hyaluronic"] = df["ingredients"].fillna("").apply(lambda x: int("hyaluronic" in x.lower()))
-    df["has_niacinamide"] = df["ingredients"].fillna("").apply(lambda x: int("niacinamide" in x.lower()))
+    df["has_hyaluronic"] = df["ingredients"].str.lower().str.contains("hyaluronic", na=False).astype(int)
+    df["has_niacinamide"] = df["ingredients"].str.lower().str.contains("niacinamide", na=False).astype(int)
 
-    # Personalization feature based on skin type
+    # PERSONALIZATION
     df["skin_type"] = df["skin_type"].fillna("unknown").str.lower()
 
-    df["is_dry_match"] = df.apply(
-        lambda x: int("dry" in str(x["highlights"]).lower() and x["skin_type"] == "dry"),
-        axis=1
-    )
+    # ADVANCED ALIGNMENT FEATURES 
+    highlights = df["highlights"].fillna("").str.lower()
 
-    # Fill other categorical fields and encode them
+    dry_keywords = ["dry", "hydrating", "moisturizing", "nourishing"]
+    oily_keywords = ["oily", "oil control", "mattifying", "shine"]
+    combo_keywords = ["combination", "balanced"]
+    sensitive_keywords = ["sensitive", "gentle", "soothing"]
+
+    def contains_any(text_series, keywords):
+        pattern = "|".join(keywords)
+        return text_series.str.contains(pattern, na=False)
+
+    df["is_dry_match"] = (
+        contains_any(highlights, dry_keywords) &
+        (df["skin_type"] == "dry")
+    ).astype(int)
+
+    df["is_oily_match"] = (
+        contains_any(highlights, oily_keywords) &
+        (df["skin_type"] == "oily")
+    ).astype(int)
+
+    df["is_combination_match"] = (
+        contains_any(highlights, combo_keywords) &
+        (df["skin_type"] == "combination")
+    ).astype(int)
+
+    df["is_sensitive_match"] = (
+        contains_any(highlights, sensitive_keywords) &
+        (df["skin_type"] == "sensitive")
+    ).astype(int)
+
+    # CATEGORICAL
     df["skin_tone"] = df["skin_tone"].fillna("unknown").astype(str)
     df["hair_color"] = df["hair_color"].fillna("unknown").astype(str)
+
     df = pd.get_dummies(
         df,
         columns=["brand_name", "skin_type", "skin_tone", "hair_color"],
         drop_first=True
     )
 
-    # Remove duplicates and check final shape
     print("Duplicates before:", df.duplicated().sum())
     df = df.drop_duplicates()
     print("Duplicates after:", df.duplicated().sum())
-    print("Final dataset shape (after preprocessing):", df.shape)
+    print("Final dataset shape:", df.shape)
 
-    # output
     os.makedirs(output_dir, exist_ok=True)
-
     output_path = os.path.join(output_dir, "cleaned_data.csv")
     df.to_csv(output_path, index=False)
 
-    print(f"Processed data saved to: {output_path}")
+    print(f"Saved to: {output_path}")
 
     return df
 
@@ -115,6 +138,10 @@ def preprocess_data(data_dir, output_dir):
 if __name__ == "__main__":
     data_dir = "data/raw"
     output_dir = "data/processed"
-  
-    # Run the preprocessing pipeline
+
     df_clean = preprocess_data(data_dir, output_dir)
+
+import pandas as pd
+
+df = pd.read_csv("data/processed/cleaned_data.csv", nrows=5)
+df.head()
