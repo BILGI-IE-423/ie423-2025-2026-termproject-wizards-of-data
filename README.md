@@ -51,4 +51,4 @@ python scripts/02_preprocess_data.py
 python scripts/03_basic_eda.py
 ```
 ## Proposal Document
-See: 
+See: docs/ResearchProposalPreprocessing.md
