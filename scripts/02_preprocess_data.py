@@ -1,4 +1,3 @@
-!pip install vaderSentiment
 
 import os
 import pandas as pd
