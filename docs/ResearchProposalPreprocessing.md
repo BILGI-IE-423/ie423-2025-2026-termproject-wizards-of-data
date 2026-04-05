@@ -254,6 +254,7 @@ After loading the dataset, the reviews data consists of 1,094,411 rows and 19 co
 
 ### Missing Value Summary
 The following variables had missing values:
+
 **Reviews:**  
 - is_recommended 
 - helpfulness  
