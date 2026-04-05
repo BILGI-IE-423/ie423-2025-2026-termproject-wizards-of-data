@@ -74,47 +74,76 @@ Our goal is not only to build a predictive model, but also to interpret product 
 Possible challenges include handling missing and noisy data, processing large-scale textual data, constructing meaningful alignment features, managing high-dimensional data after encoding, and preventing overfitting in predictive models.
 
 ---
-
 ## Preprocessing Steps
 
 ### Step 1 — Loading the Data
-The dataset was loaded using `scripts/01_load_data.py`. The Sephora Products and Skincare Reviews dataset consists of multiple files belonging to a single dataset. Review files were loaded separately and concatenated into a single dataframe using pandas. Product-level data was loaded from `product_info.csv`, and both datasets were merged on the `product_id` key using an inner join. This integration step ensured that each customer review is directly associated with its corresponding product attributes.
+The dataset was loaded using `scripts/01_load_data.py`. Multiple review files were read and concatenated into a single dataframe using pandas to create a unified reviews dataset. Product-level data was loaded separately from `product_info.csv`. These datasets were prepared for merging by ensuring file availability and structural consistency.
+
+**Purpose:**  
+Combining fragmented review files into a single dataset and linking them with product-level information allows each observation to carry both user-generated content and product attributes, which is essential for downstream analysis.
+
+**Result:**  
+Two structured datasets were obtained:
+- a consolidated reviews dataset  
+- a product-level dataset ready for integration  
 
 ---
 
 ### Step 2 — Initial Inspection
-We checked:
-- dataset shape and dimensionality  
-- column names and data types using `.info()`  
-- missing values using `.isnull().sum()`  
-- basic statistical summaries to understand value distributions  
+An initial inspection was performed using `scripts/01_load_data.py` to understand the structure and quality of the data. This included:
+- checking dataset shape and dimensionality  
+- examining column names and data types  
+- identifying missing values  
+- reviewing basic statistical summaries  
+- analyzing unique values in key categorical variables (e.g., skin type, skin tone, hair color)
 
-This step provided a clear overview of the dataset and highlighted potential issues to address.
+**Purpose:**  
+This step provides a clear understanding of the dataset’s structure and reveals potential data quality issues that may affect analysis, such as missing values or inconsistent categorical entries.
+
+**Result:**  
+A comprehensive overview of the dataset was obtained, including its structure, distributions, and potential preprocessing requirements.
 
 ---
 
-### Step 3 — Cleaning
-Using `scripts/02_preprocess_data.py`, we:
-- selected relevant variables (review text, rating, brand, ingredients, highlights, user features)  
-- renamed columns such as `rating_x` → `rating` and `brand_name_x` → `brand_name`  
-- converted the `rating` variable to numeric using `pd.to_numeric()`  
-- removed rows with missing values in `review_text` and `rating`  
-- removed duplicate observations using `.drop_duplicates()`  
-- cleaned review text using regular expressions (lowercasing and removing non-alphabetic characters)  
-- generated sentiment scores using the TextBlob library  
-- created additional features such as review length (word count)  
-- extracted product-related indicators (e.g., vegan, clean, oily) from text fields  
-- extracted ingredient-based features (e.g., hyaluronic acid, niacinamide)  
-- created a user–product alignment feature (e.g., `is_dry_match`)  
-- encoded categorical variables (brand name, skin type, skin tone, hair color) using `pd.get_dummies()` with `drop_first=True`  
+### Step 3 — Cleaning and Feature Engineering
+Data cleaning and transformation were performed using `scripts/02_preprocess_data.py` to prepare the dataset for analysis and machine learning.
 
-These steps ensured that the dataset was cleaned, enriched, and transformed into a format suitable for machine learning.
+**What was done:**
+- selected relevant columns (review text, rating, product attributes, and user features)  
+- renamed columns for consistency (`rating_x` → `rating`, `brand_name_x` → `brand_name`)  
+- converted the `rating` column to numeric format  
+- removed rows with missing `review_text` or `rating` values  
+- removed duplicate observations  
+
+**Text processing and feature creation:**
+- cleaned review text (lowercasing and removing non-alphabetic characters)  
+- generated sentiment scores using the VADER sentiment analysis tool  
+- created review length (word count)  
+
+**Feature engineering:**
+- extracted product-related indicators (e.g., vegan, clean, oily) from highlights  
+- extracted ingredient-based features (e.g., hyaluronic acid, niacinamide)  
+- created user–product alignment features (e.g., `is_dry_match`, `is_oily_match`)  
+- handled missing categorical values (filled with "unknown")  
+- encoded categorical variables using one-hot encoding  
+
+**Purpose:**  
+These transformations standardize the data, eliminate noise, and convert both textual and categorical information into structured numerical features that can be effectively used in analytical and predictive models.
+
+**Result:**  
+A cleaned and enriched dataset was produced, where raw inputs were transformed into structured variables suitable for quantitative analysis.
 
 ---
 
 ### Step 4 — Saving Processed Data
-The cleaned and fully processed dataset was saved using `scripts/02_preprocess_data.py` to:
+The final processed dataset was saved using `scripts/02_preprocess_data.py` to:
 
 `data/processed/cleaned_data.csv`
 
-Before saving, non-essential columns such as raw text fields were removed, and all variables were structured in a model-ready format. This step ensures reproducibility and allows the dataset to be reused in later stages without repeating preprocessing.
+**Purpose:**  
+Storing the processed dataset ensures that all preprocessing steps are preserved and do not need to be repeated, enabling consistent and reproducible analysis in subsequent stages.
+
+Before saving, the dataset was organized into a structured, model-ready format with all relevant features retained. This step further ensures reproducibility and allows the dataset to be reused in later stages without repeating preprocessing.
+
+**Result:**  
+A finalized, model-ready dataset was generated and stored for use in EDA and machine learning tasks.
