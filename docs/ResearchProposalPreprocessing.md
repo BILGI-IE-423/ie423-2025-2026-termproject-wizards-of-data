@@ -56,3 +56,19 @@ How does the performance of different machine learning algorithms compare in pre
 
 **Explanation:**  
 This question focuses on comparing the effectiveness of different machine learning algorithms in predicting product ratings. By applying and evaluating multiple models, the goal is to identify which approaches perform best in capturing the underlying patterns in the data. The dataset’s combination of structured and unstructured features makes it suitable for testing a variety of models, allowing for a comprehensive comparison in terms of predictive accuracy and overall performance.
+
+---
+
+## Project Proposal
+
+This project aims to investigate how product ratings reflect customer satisfaction and how accurately they can be predicted using different feature groups such as customer review sentiment, product attributes, brand information, ingredient data, and user characteristics, based on the Sephora Products and Skincare Reviews dataset.
+
+First, we will clean and preprocess the dataset by handling missing values, removing duplicates, selecting relevant variables, and preparing both structured and textual data for analysis. In particular, customer reviews will be processed and transformed into sentiment scores using natural language processing techniques.
+
+Then, we will conduct exploratory data analysis to understand the distribution of product ratings, examine relationships between sentiment and ratings, and identify patterns across different feature groups and user characteristics.
+
+Based on our research questions, we will apply predictive modeling methods to evaluate how different feature groups contribute to rating prediction, analyze whether alignment between user characteristics and product attributes leads to higher ratings, and compare the performance of different machine learning models.
+
+Our goal is not only to build a predictive model, but also to identify the most influential factors affecting product ratings and understand how personalization influences customer satisfaction.
+
+Possible challenges include handling missing and noisy data, processing large-scale textual data, constructing meaningful alignment features, managing high-dimensional data after encoding, and preventing overfitting in predictive models.
