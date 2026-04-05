@@ -1,107 +1,131 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
-# Main EDA function
-def perform_eda(input_path, figures_dir, tables_dir=None):
-    print("--- Performing EDA ---")
+# Load processed dataset
+df = pd.read_csv("data/processed/cleaned_data.csv")
 
-    # Load processed dataset
-    df = pd.read_csv(input_path)
-    print("Dataset shape:", df.shape)
-    print("\nColumns:\n", df.columns.tolist())
+# Create output directory
+figures_dir = "outputs/figures"
+os.makedirs(figures_dir, exist_ok=True)
 
-    # Create output directories for figures and tables
-    os.makedirs(figures_dir, exist_ok=True)
-    if tables_dir:
-        os.makedirs(tables_dir, exist_ok=True)
+print("EDA started...")
 
-    # ----------------------------
-    # Rating Distribution
-    # ----------------------------
-    print("\nRating Distribution:\n", df["rating"].value_counts())
+# =========================================================
+# RQ1 — Feature Group Impact on Rating
+# =========================================================
 
-    plt.figure()
-    df["rating"].hist()
-    plt.title("Rating Distribution")
-    plt.xlabel("Rating")
-    plt.ylabel("Frequency")
+brand_score = df.filter(like="brand_name_").sum(axis=1)
+product_score = df[[
+    "is_vegan",
+    "is_clean",
+    "is_oily",
+    "has_hyaluronic",
+    "has_niacinamide"
+]].sum(axis=1)
+user_score = df.filter(like="skin_").sum(axis=1)
 
-    fig_path = os.path.join(figures_dir, "rating_distribution.png")
-    plt.savefig(fig_path)
-    plt.close()
+rq1_df = pd.DataFrame({
+    "Feature": [
+        "Sentiment",
+        "Review Length",
+        "Brand Information",
+        "Product and Ingredient Features",
+        "User Characteristics"
+    ],
+    "Impact": [
+        df["sentiment_score"].corr(df["rating"]),
+        df["review_length"].corr(df["rating"]),
+        brand_score.corr(df["rating"]),
+        product_score.corr(df["rating"]),
+        user_score.corr(df["rating"])
+    ]
+}).sort_values(by="Impact", ascending=False)
 
-    print(f"Saved: {fig_path}")
+plt.figure(figsize=(10, 6))
+plt.bar(
+    rq1_df["Feature"],
+    rq1_df["Impact"],
+    color=["#FF6B6B", "#4ECDC4", "#FFD93D", "#6A4C93", "#1A936F"]
+)
+plt.title("Feature Group Impact on Rating")
+plt.ylabel("Correlation with Rating")
+plt.xticks(rotation=20)
 
-    # ----------------------------
-    # Review Length Distribution
-    # ----------------------------
-    plt.figure()
-    df["review_length"].hist()
-    plt.title("Review Length Distribution")
-    plt.xlabel("Number of Words")
-    plt.ylabel("Frequency")
+plt.savefig(os.path.join(figures_dir, "rq1_feature_group_impact.png"))
+plt.close()
 
-    fig_path = os.path.join(figures_dir, "review_length_distribution.png")
-    plt.savefig(fig_path)
-    plt.close()
+# =========================================================
+# RQ1 — Individual Feature Analysis
+# =========================================================
 
-    print(f"Saved: {fig_path}")
+all_correlations = df.corr(numeric_only=True)["rating"].sort_values(ascending=False)
+top_features = all_correlations.drop("rating").head(10)
 
-    # ----------------------------
-    # Sentiment vs Rating
-    # ----------------------------
-    plt.figure()
-    plt.scatter(df["sentiment_score"], df["rating"])
-    plt.title("Sentiment Score vs Rating")
-    plt.xlabel("Sentiment Score")
-    plt.ylabel("Rating")
+plt.figure(figsize=(10, 6))
+top_features.plot(kind="bar", color="#2EC4B6")
+plt.title("Top Individual Features Affecting Rating")
+plt.ylabel("Correlation")
+plt.xticks(rotation=45)
 
-    fig_path = os.path.join(figures_dir, "sentiment_vs_rating.png")
-    plt.savefig(fig_path)
-    plt.close()
+plt.savefig(os.path.join(figures_dir, "rq1_top_individual_features.png"))
+plt.close()
 
-    print(f"Saved: {fig_path}")
+# =========================================================
+# Sentiment Analysis (Detailed)
+# =========================================================
 
-    # ----------------------------
-    # Feature Averages by Rating
-    # ----------------------------
-    feature_means = df.groupby("rating")[
-        ["review_length", "sentiment_score"]
-    ].mean()
+plt.figure(figsize=(8, 5))
+sns.boxplot(x="rating", y="sentiment_score", data=df)
+plt.title("Sentiment Distribution Across Rating Levels")
 
-    print("\nFeature Means by Rating:\n", feature_means)
+plt.savefig(os.path.join(figures_dir, "sentiment_distribution.png"))
+plt.close()
 
-    if tables_dir:
-        table_path = os.path.join(tables_dir, "feature_means_by_rating.csv")
-        feature_means.to_csv(table_path)
-        print(f"Saved: {table_path}")
+# =========================================================
+# RQ2 — User–Product Alignment Impact
+# =========================================================
 
-    # ----------------------------
-    # Distribution of binary features (vegan / clean / oily)
-    # ----------------------------
-    binary_features = ["is_vegan", "is_clean", "is_oily"]
+alignment_df = pd.DataFrame({
+    "Feature": [
+        "Dry Skin Match",
+        "Oily Skin Match",
+        "Combination Skin Match",
+        "Sensitive Skin Match"
+    ],
+    "Impact": [
+        df["is_dry_match"].corr(df["rating"]),
+        df["is_oily_match"].corr(df["rating"]),
+        df["is_combination_match"].corr(df["rating"]),
+        df["is_sensitive_match"].corr(df["rating"])
+    ]
+}).sort_values(by="Impact", ascending=False)
 
-    for col in binary_features:
-        plt.figure()
-        df[col].value_counts().plot(kind="bar")
-        plt.title(f"{col} Distribution")
-        plt.xlabel(col)
-        plt.ylabel("Count")
+plt.figure(figsize=(8, 5))
+plt.bar(
+    alignment_df["Feature"],
+    alignment_df["Impact"],
+    color=["#FF9F1C", "#2EC4B6", "#E71D36", "#6A4C93"]
+)
+plt.title("User–Product Alignment Impact on Rating")
+plt.ylabel("Correlation with Rating")
 
-        fig_path = os.path.join(figures_dir, f"{col}_distribution.png")
-        plt.savefig(fig_path)
-        plt.close()
+plt.savefig(os.path.join(figures_dir, "rq2_alignment_impact.png"))
+plt.close()
 
-        print(f"Saved: {fig_path}")
+# =========================================================
+# Correlation Heatmap
+# =========================================================
 
-    print("\nEDA completed successfully.")
+plt.figure(figsize=(6, 5))
+sns.heatmap(
+    df[["rating", "sentiment_score", "review_length"]].corr(),
+    annot=True
+)
+plt.title("Correlation Heatmap")
 
+plt.savefig(os.path.join(figures_dir, "correlation_heatmap.png"))
+plt.close()
 
-if __name__ == "__main__":
-    input_path = "data/processed/cleaned_data.csv"
-    figures_dir = "outputs/figures"
-    tables_dir = "outputs/tables"
-
-     # Run the EDA pipeline
-    perform_eda(input_path, figures_dir, tables_dir)
+print("EDA completed. All figures saved in outputs/figures.")
