@@ -3,129 +3,138 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Load processed dataset
+sns.set(style="whitegrid")
+
 df = pd.read_csv("data/processed/cleaned_data.csv")
 
-# Create output directory
 figures_dir = "outputs/figures"
+tables_dir = "outputs/tables"
+
 os.makedirs(figures_dir, exist_ok=True)
+os.makedirs(tables_dir, exist_ok=True)
 
 print("EDA started...")
 
 # =========================================================
-# Feature Group Impact on Rating
+# SENTIMENT CATEGORY
 # =========================================================
 
-brand_score = df.filter(like="brand_name_").sum(axis=1)
-product_score = df[[
-    "is_vegan",
-    "is_clean",
-    "is_oily",
-    "has_hyaluronic",
-    "has_niacinamide"
-]].sum(axis=1)
-user_score = df.filter(like="skin_").sum(axis=1)
+def sentiment_category(score):
+    if score > 0.05:
+        return "positive"
+    elif score < -0.05:
+        return "negative"
+    else:
+        return "neutral"
 
-rq1_df = pd.DataFrame({
-    "Feature": [
-        "Sentiment",
-        "Review Length",
-        "Brand Information",
-        "Product and Ingredient Features",
-        "User Characteristics"
-    ],
-    "Impact": [
-        df["sentiment_score"].corr(df["rating"]),
-        df["review_length"].corr(df["rating"]),
-        brand_score.corr(df["rating"]),
-        product_score.corr(df["rating"]),
-        user_score.corr(df["rating"])
+df["sentiment_category"] = df["sentiment_score"].apply(sentiment_category)
+
+# =========================================================
+# TABLE 1 — FEATURE STATISTICS
+# =========================================================
+
+feature_stats = df[["rating","review_length","sentiment_score"]].describe()
+feature_stats.to_csv(os.path.join(tables_dir, "01_feature_statistics.csv"))
+
+# =========================================================
+# TABLE 2 — FEATURE RATIOS
+# =========================================================
+
+feature_ratio = pd.DataFrame({
+    "Feature": ["Vegan","Clean","Oily","Niacinamide","Hyaluronic"],
+    "Percentage (%)": [
+        df["is_vegan"].mean()*100,
+        df["is_clean"].mean()*100,
+        df["is_oily"].mean()*100,
+        df["has_niacinamide"].mean()*100,
+        df["has_hyaluronic"].mean()*100
     ]
-}).sort_values(by="Impact", ascending=False)
+})
 
-plt.figure(figsize=(10, 6))
-plt.bar(
-    rq1_df["Feature"],
-    rq1_df["Impact"],
-    color=["#FF6B6B", "#4ECDC4", "#FFD93D", "#6A4C93", "#1A936F"]
+feature_ratio.to_csv(os.path.join(tables_dir, "02_feature_ratios.csv"), index=False)
+
+# =========================================================
+# FIGURE 01 — RATING DISTRIBUTION
+# =========================================================
+
+plt.figure(figsize=(8,5))
+sns.countplot(x="rating", data=df, palette="viridis")
+plt.title("Rating Distribution")
+plt.savefig(os.path.join(figures_dir, "01_rating_distribution.png"))
+plt.close()
+
+# =========================================================
+# FIGURE 02 — REVIEW LENGTH DISTRIBUTION
+# =========================================================
+
+plt.figure(figsize=(8,5))
+sns.histplot(df["review_length"], bins=40, color="#3498DB")
+plt.title("Review Length Distribution")
+plt.savefig(os.path.join(figures_dir, "02_review_length_distribution.png"))
+plt.close()
+
+# =========================================================
+# FIGURE 03 — SENTIMENT vs RATING (UPDATED)
+# =========================================================
+
+plt.figure(figsize=(6,4))
+sns.countplot(
+    x="rating",
+    hue="sentiment_category",
+    data=df,
+    palette={"negative":"#E15759","neutral":"#BAB0AC","positive":"#59A14F"}
 )
-plt.title("Feature Group Impact on Rating")
-plt.ylabel("Correlation with Rating")
-plt.xticks(rotation=20)
-
-plt.savefig(os.path.join(figures_dir, "rq1_feature_group_impact.png"))
+plt.title("Sentiment vs Rating")
+plt.tight_layout()
+plt.savefig(os.path.join(figures_dir, "03_sentiment_vs_rating.png"))
 plt.close()
 
 # =========================================================
-# Individual Feature Analysis
+# FIGURE 04 — COMBINED PRODUCT FEATURES (UPDATED)
 # =========================================================
 
-all_correlations = df.corr(numeric_only=True)["rating"].sort_values(ascending=False)
-top_features = all_correlations.drop("rating").head(10)
+features = ["is_vegan","is_clean","is_oily","has_niacinamide"]
 
-plt.figure(figsize=(10, 6))
-top_features.plot(kind="bar", color="#2EC4B6")
-plt.title("Top Individual Features Affecting Rating")
-plt.ylabel("Correlation")
-plt.xticks(rotation=45)
+feature_counts = []
 
-plt.savefig(os.path.join(figures_dir, "rq1_top_individual_features.png"))
-plt.close()
+for feature in features:
+    count_1 = df[feature].sum()
+    count_0 = len(df) - count_1
 
-# =========================================================
-# Sentiment Analysis 
-# =========================================================
+    feature_counts.append({
+        "Feature": feature,
+        "Present": count_1,
+        "Absent": count_0
+    })
 
-plt.figure(figsize=(8, 5))
-sns.boxplot(x="rating", y="sentiment_score", data=df)
-plt.title("Sentiment Distribution Across Rating Levels")
+feature_df = pd.DataFrame(feature_counts)
+feature_df = feature_df.melt(id_vars="Feature", var_name="Status", value_name="Count")
 
-plt.savefig(os.path.join(figures_dir, "sentiment_distribution.png"))
-plt.close()
-
-# =========================================================
-# User–Product Alignment Impact
-# =========================================================
-
-alignment_df = pd.DataFrame({
-    "Feature": [
-        "Dry Skin Match",
-        "Oily Skin Match",
-        "Combination Skin Match",
-        "Sensitive Skin Match"
-    ],
-    "Impact": [
-        df["is_dry_match"].corr(df["rating"]),
-        df["is_oily_match"].corr(df["rating"]),
-        df["is_combination_match"].corr(df["rating"]),
-        df["is_sensitive_match"].corr(df["rating"])
-    ]
-}).sort_values(by="Impact", ascending=False)
-
-plt.figure(figsize=(8, 5))
-plt.bar(
-    alignment_df["Feature"],
-    alignment_df["Impact"],
-    color=["#FF9F1C", "#2EC4B6", "#E71D36", "#6A4C93"]
+plt.figure(figsize=(8,5))
+sns.barplot(
+    data=feature_df,
+    x="Feature",
+    y="Count",
+    hue="Status",
+    palette={"Present":"#59A14F","Absent":"#E15759"}
 )
-plt.title("User–Product Alignment Impact on Rating")
-plt.ylabel("Correlation with Rating")
-
-plt.savefig(os.path.join(figures_dir, "rq2_alignment_impact.png"))
+plt.title("Product Feature Distribution (Present vs Absent)")
+plt.tight_layout()
+plt.savefig(os.path.join(figures_dir, "04_combined_features.png"))
 plt.close()
 
 # =========================================================
-# Correlation Heatmap
+# FIGURE 05 — CORRELATION HEATMAP
 # =========================================================
 
-plt.figure(figsize=(6, 5))
+plt.figure(figsize=(6,5))
 sns.heatmap(
-    df[["rating", "sentiment_score", "review_length"]].corr(),
-    annot=True
+    df[["rating","sentiment_score","review_length"]].corr(),
+    annot=True,
+    cmap="coolwarm"
 )
 plt.title("Correlation Heatmap")
-
-plt.savefig(os.path.join(figures_dir, "correlation_heatmap.png"))
+plt.savefig(os.path.join(figures_dir, "05_correlation_heatmap.png"))
 plt.close()
 
-print("EDA completed. All figures saved in outputs/figures.")
+print("EDA completed successfully.")
