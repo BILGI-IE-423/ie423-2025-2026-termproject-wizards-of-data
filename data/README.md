@@ -41,5 +41,17 @@ data/
 - The dataset is not included in this repository due to its large size.
 - Manual download is required to run the code.
 - Make sure the file paths in the code match the structure above.
+  
+## Processed Data
 
+The processed dataset (`cleaned_data.csv`) is not included in the repository due to its size.
+
+It can be downloaded from the following link:
+
+[Download Processed Dataset](https://drive.google.com/file/d/1hmojSxUpNTYt6nFqC2A71e5dG4HCVNh5/view?usp=drive_link)
+
+Alternatively, it can be reproduced by running:
+
+```bash
+python scripts/02_preprocess_data.py
 
