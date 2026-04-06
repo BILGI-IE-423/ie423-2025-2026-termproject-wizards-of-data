@@ -1,4 +1,5 @@
 pandas
-vaderSentiment
 matplotlib
 seaborn
+scikit-learn
+vaderSentiment
