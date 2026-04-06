@@ -23,11 +23,11 @@ def preprocess_data(data_dir, output_dir):
     ]
 
     # Check existence of all review files
-        for f in review_files:
+    for f in review_files:
         if not os.path.exists(f):
             raise FileNotFoundError(f"Missing file: {f}")
 
-    # Load and concatenate review datasets 
+    # Load and concatenate review datasets
     df_reviews = pd.concat(
         [pd.read_csv(f, low_memory=False) for f in review_files],
         ignore_index=True
@@ -37,9 +37,9 @@ def preprocess_data(data_dir, output_dir):
     df = pd.merge(df_reviews, df_products, on="product_id")
 
     print("Initial dataset shape (after merging):", df.shape)
-     
+
      # Select relevant columns for analysis
-     df = df[[
+    df = df[[
         "review_text",
         "rating_x",
         "brand_name_x",
@@ -92,7 +92,7 @@ def preprocess_data(data_dir, output_dir):
     # Personalization
     df["skin_type"] = df["skin_type"].fillna("unknown").str.lower()
 
-    # Advanced alignment features 
+    # Advanced alignment features
     highlights = df["highlights"].fillna("").str.lower()
 
     dry_keywords = ["dry", "hydrating", "moisturizing", "nourishing"]
@@ -103,8 +103,7 @@ def preprocess_data(data_dir, output_dir):
     def contains_any(text_series, keywords):
         pattern = "|".join(keywords)
         return text_series.str.contains(pattern, na=False)
-        return df
-    
+
     # Create matching features based on skin type and product properties
     df["is_dry_match"] = (
         contains_any(highlights, dry_keywords) &
@@ -147,13 +146,13 @@ def preprocess_data(data_dir, output_dir):
     df.to_csv(output_path, index=False)
 
     print(f"Saved to: {output_path}")
-   
+
 
 
 if __name__ == "__main__":
     data_dir = "data/raw"
     output_dir = "data/processed"
-    
+
     # Run preprocessing pipeline
     df_clean = preprocess_data(data_dir, output_dir)
 
@@ -161,4 +160,3 @@ import pandas as pd
 
 df= pd.read_csv("data/processed/cleaned_data.csv", nrows=5)
 print(df.head())
-
