@@ -48,7 +48,7 @@ The processed dataset (`cleaned_data.csv`) is not included in the repository due
 
 It can be downloaded from the following link:
 
-[Download Processed Dataset](https://drive.google.com/file/d/1hmojSxUpNTYt6nFqC2A71e5dG4HCVNh5/view?usp=drive_link)
+[Cleaned Dataset](https://drive.google.com/file/d/1hmojSxUpNTYt6nFqC2A71e5dG4HCVNh5/view?usp=drive_link)
 
 Alternatively, it can be reproduced by running:
 
