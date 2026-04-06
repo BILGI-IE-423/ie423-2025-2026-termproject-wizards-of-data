@@ -3,10 +3,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# Set visualization style
 sns.set(style="whitegrid")
 
+# Load processed dataset
 df = pd.read_csv("data/processed/cleaned_data.csv")
 
+# Define output directories
 figures_dir = "outputs/figures"
 tables_dir = "outputs/tables"
 
@@ -15,10 +18,7 @@ os.makedirs(tables_dir, exist_ok=True)
 
 print("EDA started...")
 
-# =========================================================
-# SENTIMENT CATEGORY
-# =========================================================
-
+# Create sentiment category (positive / negative / neutral)
 def sentiment_category(score):
     if score > 0.05:
         return "positive"
@@ -29,19 +29,13 @@ def sentiment_category(score):
 
 df["sentiment_category"] = df["sentiment_score"].apply(sentiment_category)
 
-# =========================================================
-# TABLE 1 — FEATURE STATISTICS
-# =========================================================
-
-feature_stats = df[["rating","review_length","sentiment_score"]].describe()
+# Generate summary statistics table for key numerical features
+feature_stats = df[["rating", "review_length", "sentiment_score"]].describe()
 feature_stats.to_csv(os.path.join(tables_dir, "01_feature_statistics.csv"))
 
-# =========================================================
-# TABLE 2 — FEATURE RATIOS
-# =========================================================
-
+# Generate feature ratio table for product attributes
 feature_ratio = pd.DataFrame({
-    "Feature": ["Vegan","Clean","Oily","Niacinamide","Hyaluronic"],
+    "Feature": ["Vegan", "Clean", "Oily", "Niacinamide", "Hyaluronic"],
     "Percentage (%)": [
         df["is_vegan"].mean()*100,
         df["is_clean"].mean()*100,
@@ -53,30 +47,21 @@ feature_ratio = pd.DataFrame({
 
 feature_ratio.to_csv(os.path.join(tables_dir, "02_feature_ratios.csv"), index=False)
 
-# =========================================================
-# FIGURE 01 — RATING DISTRIBUTION
-# =========================================================
-
+# Plot rating distribution
 plt.figure(figsize=(8,5))
 sns.countplot(x="rating", data=df, palette="viridis")
 plt.title("Rating Distribution")
 plt.savefig(os.path.join(figures_dir, "01_rating_distribution.png"))
 plt.close()
 
-# =========================================================
-# FIGURE 02 — REVIEW LENGTH DISTRIBUTION
-# =========================================================
-
+# Plot review length distribution
 plt.figure(figsize=(8,5))
 sns.histplot(df["review_length"], bins=40, color="#3498DB")
 plt.title("Review Length Distribution")
 plt.savefig(os.path.join(figures_dir, "02_review_length_distribution.png"))
 plt.close()
 
-# =========================================================
-# FIGURE 03 — SENTIMENT vs RATING (UPDATED)
-# =========================================================
-
+# Plot sentiment vs rating distribution
 plt.figure(figsize=(6,4))
 sns.countplot(
     x="rating",
@@ -89,10 +74,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(figures_dir, "03_sentiment_vs_rating.png"))
 plt.close()
 
-# =========================================================
-# FIGURE 04 — COMBINED PRODUCT FEATURES (UPDATED)
-# =========================================================
-
+# Plot combined product feature distribution (present vs absent)
 features = ["is_vegan","is_clean","is_oily","has_niacinamide"]
 
 feature_counts = []
@@ -123,10 +105,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(figures_dir, "04_combined_features.png"))
 plt.close()
 
-# =========================================================
-# FIGURE 05 — CORRELATION HEATMAP
-# =========================================================
-
+# Plot correlation heatmap for key variables
 plt.figure(figsize=(6,5))
 sns.heatmap(
     df[["rating","sentiment_score","review_length"]].corr(),
