@@ -209,10 +209,13 @@ The chart illustrates that positive sentiment increases with higher ratings, whi
   <img src="https://github.com/user-attachments/assets/d30187f0-3c75-4755-9177-22bae867c304" width="700">
 </p>
                                     
-## Figure 4- Correlation Heatmap
+## Figure 4 - Correlation Heatmap
+
 The heatmap indicates a moderate positive correlation between sentiment score and rating, whereas review length shows almost no relationship with rating. This suggests that sentiment is more informative than review length.
+
 <p align="center">
-                                     <img width="600" height="500" alt="05_correlation_heatmap" src="https://github.com/user-attachments/assets/294e3804-834d-4fce-851e-78541f2a2d47" />
+  <img src="https://github.com/user-attachments/assets/294e3804-834d-4fce-851e-78541f2a2d47" width="700">
+</p>
 
 ---
 
