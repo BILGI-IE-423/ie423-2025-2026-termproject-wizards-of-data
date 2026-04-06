@@ -226,8 +226,8 @@ This section explains how to reproduce all results in this project.
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/BILGI-IE-423/ie423-2025-2026-termproject-wizards-of-data/tree/main]
-cd [ie423-2025-2026-termproject-wizards-of-data]
+git clone https://github.com/BILGI-IE-423/ie423-2025-2026-termproject-wizards-of-data.git
+cd ie423-2025-2026-termproject-wizards-of-data
 ```
 
 ### 2. Install Required Packages
