@@ -286,6 +286,7 @@ After running the scripts:
   `outputs/figures/`
 
 - Tables will be saved in:
+  
   `outputs/tables/`
 
 ---
