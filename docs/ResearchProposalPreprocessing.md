@@ -208,8 +208,17 @@ The chart illustrates that positive sentiment increases with higher ratings, whi
 <p align="center">
   <img src="https://github.com/user-attachments/assets/d30187f0-3c75-4755-9177-22bae867c304" width="700">
 </p>
+
+## Figure 4 - Combined Features
+
+The combined feature distribution shows the presence and absence of key product attributes, highlighting how frequently each feature appears across the dataset.
+
+<p align="center">
+   <img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/053e91e0-c0e5-4f89-abb4-fce57ce00046" />
+</p>
+
                                     
-## Figure 4 - Correlation Heatmap
+## Figure 5 - Correlation Heatmap
 
 The heatmap indicates a moderate positive correlation between sentiment score and rating, whereas review length shows almost no relationship with rating. This suggests that sentiment is more informative than review length.
 
