@@ -44,14 +44,15 @@ data/
   
 ## Processed Data
 
-The processed dataset (`cleaned_data.csv`) is not included in the repository due to its size.
+Processed Data
+The processed dataset (raw_original_data.csv) is included in the repository and located in the data/ directory.
 
-It can be downloaded from the following link:
+Project structure:
+data/
+├── raw/
+├── README.md
+└── raw_original_data.csv
 
-[Cleaned Dataset](https://drive.google.com/file/d/1hmojSxUpNTYt6nFqC2A71e5dG4HCVNh5/view?usp=drive_link)
-
-Alternatively, it can be reproduced by running:
-
-```bash
-python scripts/02_preprocess_data.py
+The file can also be regenerated at any time by running:
+python scripts/preprocess_data.py
 
