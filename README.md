@@ -55,5 +55,4 @@ python scripts/04_model_evaluation
 ```
 > **Note:** Make sure to place the raw dataset files in the `data/raw/` directory before running the scripts.  
 > For detailed instructions, refer to `data/README.md`.
-## Proposal Document
-See: [docs/ResearchProposalPreprocessing.md](docs/ResearchProposalPreprocessing.md)
+
