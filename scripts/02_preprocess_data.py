@@ -20,7 +20,8 @@ from sklearn.pipeline import Pipeline
  
 import warnings
 warnings.filterwarnings("ignore")
- 
+
+# Transformer Environment Setup
 try:
     from transformers import pipeline
     print("Hugging Face Transformers is ready.")
@@ -28,7 +29,8 @@ except ImportError:
     print("Installing Transformers package... Please wait.")
     os.system("pip install -q transformers")
     from transformers import pipeline
- 
+
+# Data Cleansing & Stratified Subsampling Utility
 def clean_build_and_subsample(df, sample_size=5000):
     print("\n--- Data Cleaning and Subsampling ---")
     df = df.dropna(subset=["review_text", "rating"])
@@ -52,7 +54,8 @@ def clean_build_and_subsample(df, sample_size=5000):
         df_stratified = df.reset_index(drop=True)
  
     return df_stratified
- 
+
+# DeBERTa Aspect-Based Sentiment Analysis (ABSA) Layer
 def extract_absa_features_pure_hf(df):
     print(f"\n--- Pure Hugging Face ABSA Layer Initialized (Row Count: {len(df)}) ---")
   
@@ -117,7 +120,8 @@ def extract_absa_features_pure_hf(df):
                 df.at[idx, available_col] = 0
  
     return df
- 
+
+# Domain-Specific Feature Engineering Pipeline
 def engineer_features(df):
     df["review_length"] = df["review_text"].fillna("").astype(str).apply(lambda x: len(x.split())).astype(np.int32)
  
@@ -148,20 +152,26 @@ def engineer_features(df):
  
     return df
  
-# --- MAIN EXECUTION FLOW ---
+# =====================================================================
+# RUNTIME INVOCATION & PIPELINE EXECUTION
+# =====================================================================
 if "raw_df" not in globals():
     raise NameError("Error: 'raw_df' not found in memory. Please execute Cell 1 first!")
- 
+
+# 1. Sanitize & Stratify Data
 df_subsampled = clean_build_and_subsample(raw_df, sample_size=5000)
+# 2. Extract Deep Learning ABSA Payloads
 df_hf_processed = extract_absa_features_pure_hf(df_subsampled)
- 
+
+# 3. Compute Structural Metrics & Quality Distributions
 absa_missing_series = df_hf_processed[["absa_skin_aspect", "absa_hair_aspect", "absa_product_aspect"]].isna().mean()
  
 absa_flag_distributions = {}
 for col in ["absa_skin_available", "absa_hair_available", "absa_product_available"]:
     dist = df_hf_processed[col].value_counts(normalize=True).reindex([0, 1, 2], fill_value=0.0)
     absa_flag_distributions[col] = dist.to_dict()
- 
+
+# 4. Trigger Feature Engineering & Export Golden Dataset for EDA/Modeling
 print(">> Preparing a clean, non-skewed dataset copy for EDA plots...")
 df_eda_save = engineer_features(df_hf_processed.copy())
 os.makedirs("data", exist_ok=True)
