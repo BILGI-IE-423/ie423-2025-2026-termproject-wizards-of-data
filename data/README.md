@@ -59,5 +59,7 @@ data/
 
 
 The file can also be regenerated at any time by running:
-scripts/preprocess_data.py
+
+[`scripts/preprocess_data.py`](scripts/preprocess_data.py)
+
 
