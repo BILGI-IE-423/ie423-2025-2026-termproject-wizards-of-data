@@ -9,6 +9,7 @@ https://www.kaggle.com/datasets/nadyinky/sephora-products-and-skincare-reviews
 
 ## Files
 The dataset includes the following files:
+
 - product_info.csv
 - reviews_0-250.csv
 - reviews_250-500.csv
@@ -27,15 +28,16 @@ After downloading and extracting, place the files inside the following directory
 data/raw/
 
 The expected folder structure is:
-
+```text
 data/
-  raw/
-     product_info.csv
-     reviews_0-250.csv
-     reviews_250-500.csv
-     reviews_500-750.csv
-     reviews_750-1250.csv
-     reviews_1250-end.csv
+├── raw/
+│   ├── product_info.csv
+│   ├── reviews_0-250.csv
+│   ├── reviews_250-500.csv
+│   ├── reviews_500-750.csv
+│   ├── reviews_750-1250.csv
+│   └── reviews_1250-end.csv
+```
 
 ## Notes
 - The dataset is not included in this repository due to its large size.
