@@ -60,6 +60,6 @@ data/
 
 The file can also be regenerated at any time by running:
 
-[`ie423-2025-2026-termproject-wizards-of-data/scripts/preprocess_data.py`](scripts/preprocess_data.py)
+scripts/preprocess_data.py
 
 
