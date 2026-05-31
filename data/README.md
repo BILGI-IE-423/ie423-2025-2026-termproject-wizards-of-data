@@ -48,10 +48,15 @@ Processed Data
 The processed dataset (raw_original_data.csv) is included in the repository and located in the data/ directory.
 
 Project structure:
+
+```text
 data/
+│
 ├── raw/
-├── README.md
-└── raw_original_data.csv
+├── raw_original_data.csv
+└── README.md
+```
+
 
 The file can also be regenerated at any time by running:
 python scripts/preprocess_data.py
