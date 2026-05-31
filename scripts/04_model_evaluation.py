@@ -51,8 +51,9 @@ def run_ultimate_evaluation_with_all_visuals(
     print("="*60)
  
     # =========================================================
-    # TABLE 0
+    # TABLE 0 - TARGETS RQ1
     # =========================================================
+    # Validates DeBERTa-v3 ABSA penetration metrics and API error diagnostics
     print("\n📋 TABLE 0: DeBERTa ABSA Model Aspect Penetration & State Distribution Report")
  
     absa_report_df = pd.DataFrame({
@@ -86,8 +87,9 @@ def run_ultimate_evaluation_with_all_visuals(
     )
  
     # =========================================================
-    # TABLE 1
+    # TABLE 1 - DATASET ROBUSTNESS REPORT
     # =========================================================
+    # Evaluates class distribution shift before and after structural down-sampling
     print("\n📋 TABLE 1: Dependent Variable (Target) Class Distribution Report")
  
     total_before = y_train_before.sum()
@@ -131,8 +133,9 @@ def run_ultimate_evaluation_with_all_visuals(
     )
  
     # =========================================================
-    # TABLE 2
+    # TABLE 2 - TARGETS RQ3
     # =========================================================
+    # Benchmarks macro-level classifiers against the baseline floor across cross-validation
     print("\n📋 TABLE 2: Robustness & Hyperparameter-Tuned Model Comparison Summary")
  
     summary_data = []
@@ -157,8 +160,9 @@ def run_ultimate_evaluation_with_all_visuals(
     )
  
     # =========================================================
-    # TABLE 3
+    # TABLE 3 - GRANULAR ERROR DISCRIMINATION
     # =========================================================
+    # Dissects precision, recall, and empirical support at the individual class margin
     print("\n📋 TABLE 3: Comprehensive Class-Based Performance Report")
  
     detailed_metrics = []
@@ -205,8 +209,9 @@ def run_ultimate_evaluation_with_all_visuals(
     df_eda = pd.read_csv(data_path)
  
     # =========================================================
-    # TABLE 4 - RQ2 USER-PRODUCT ALIGNMENT ANALYSIS
+    # TABLE 4 - TARGETS RQ2
     # =========================================================
+    # Quantifies behavioral correlation between structured ingredient alignment and ratings
     if "user_product_alignment" in df_eda.columns and "rating" in df_eda.columns:
         alignment_table = (
             df_eda
@@ -257,8 +262,9 @@ def run_ultimate_evaluation_with_all_visuals(
     sns.set_theme(style="whitegrid")
  
     # =========================================================
-    # G1 - CLASS BALANCE GRAPH
+    # G1 - DATA PREPARATION INSIGHTS
     # =========================================================
+    # Visualizes frequency distributions during class-balancing pipelines
     plt.figure(figsize=(7, 4.5))
  
     df_before = pd.DataFrame({
@@ -303,8 +309,9 @@ def run_ultimate_evaluation_with_all_visuals(
     plt.show()
  
     # =========================================================
-    # G2 - SENTIMENT DISTRIBUTION
+    # G2 -TARGETS RQ1
     # =========================================================
+    # Maps extracted transformer sentiment categories directly to target variables
     plt.figure(figsize=(7, 4.5))
  
     sns.countplot(
@@ -330,8 +337,9 @@ def run_ultimate_evaluation_with_all_visuals(
     plt.show()
  
     # =========================================================
-    # G3 - CORRELATION MATRIX
+    # G3 - TARGETS RQ1 & RQ2 MULTI-MODAL INTERACTION
     # =========================================================
+    # Explores linear interactions between transformer features and structural review constraints
     plt.figure(figsize=(8, 6))
  
     corr_cols = [
