@@ -6,6 +6,7 @@
 - Avsu Evren
 - Yağmur Battal
 ## Website
+https://bilgi-ie-423.github.io/ie423-2025-2026-termproject-wizards-of-data/
 
 ## Dataset
 Dataset: Sephora Products and Skincare Reviews 
