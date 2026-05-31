@@ -133,7 +133,7 @@ def run_ultimate_evaluation_with_all_visuals(
     )
  
     # =========================================================
-    # TABLE 2 - TARGETS RQ3
+    # TABLE 2 - TARGETS RQ1
     # =========================================================
     # Benchmarks macro-level classifiers against the baseline floor across cross-validation
     print("\n📋 TABLE 2: Robustness & Hyperparameter-Tuned Model Comparison Summary")
