@@ -19,7 +19,8 @@ In addition, the project investigates the alignment between user characteristics
 ```text
 ie423-2025-2026-termproject-wizards-of-data/
 │
-├── README.md                               • Overview of the project, objectives, and instructions to run the code  
+├── README.md                               • Overview of the project, objectives, and instructions to run the code
+├── index.html                              • GitHub Pages website
 ├── requirements.txt                        • List of required Python libraries  
 
 ├── data/                                   • Dataset directory  
@@ -28,16 +29,15 @@ ie423-2025-2026-termproject-wizards-of-data/
 │   └── README.md                           • Instructions for downloading and placing the dataset  
 
 ├── scripts/                                • Python scripts for each project stage  
-│   ├── 01_load_data.py                     • Loads and combines raw data files  
-│   ├── 02_preprocess_data.py               • Cleans data, handles missing values, and creates new features  
-│   └── 03_basic_eda.py                     • Performs exploratory data analysis and generates outputs  
+│   ├── 01_load_data.py                     • Extracts and merges raw data files. 
+│   ├── 02_preprocess_data.py               • Cleans text and extracts DeBERTa ABSA features.  
+│   ├── 03_model_training.py                • Handles class balancing and trains optimized ML models (Logistic Regression, Random Forest, SVM).
+│   └── 04_model_evaluation                 • Generates all EDA plots, evaluation metrics, and performance tables.
 
-├── outputs/                                • Generated analysis results  
-│   ├── figures/                            • Saved plots and visualizations  
-│   ├── tables/                             • Generated summary tables  
-
-└── docs/                                   • Project documentation  
-    └── ResearchProposalPreprocessing.md    • Main report including proposal and preprocessing steps
+├── visuals/                                • Generated analysis results and assets.  
+│   ├── figures/                            • Saved plots and evaluation visualizations (ROC, PR curves, etc.). 
+│   └──tables/                             • Generated summary performance and distribution tables (CSVs).
+└──
 ```
 
 ## Installation
