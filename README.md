@@ -27,7 +27,7 @@ ie423-2025-2026-termproject-wizards-of-data/
 
 ├── data/                                   • Dataset directory  
 │   ├── raw/                                • Original dataset files (see data/README.md for download instructions) 
-│   ├── processed/                          • Cleaned dataset generated after preprocessing  
+│   ├── raw_original_data.csv               • Cleaned dataset generated after preprocessing  
 │   └── README.md                           • Instructions for downloading and placing the dataset  
 
 ├── scripts/                                • Python scripts for each project stage  
@@ -38,7 +38,7 @@ ie423-2025-2026-termproject-wizards-of-data/
 
 ├── visuals/                                • Generated analysis results and assets.  
 │   ├── figures/                            • Saved plots and evaluation visualizations (ROC, PR curves, etc.). 
-│   └──tables/                              • Generated summary performance and distribution tables (CSVs).
+│   └── tables/                             • Generated summary performance and distribution tables (CSVs).
 └──
 ```
 
