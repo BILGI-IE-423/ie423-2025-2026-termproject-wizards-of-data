@@ -30,7 +30,8 @@ def find_rating_column(df):
  
 def load_and_merge_data(data_dir="data/raw"):
     print("\n--- Data Upload and Merging Has Begun ---")
- 
+
+    # Path Resolution Matrix
     review_files_raw = [os.path.join(data_dir, f"reviews_{i}.csv") for i in ["0-250", "250-500", "500-750", "750-1250", "1250-end"]]
     review_files_root = [f"reviews_{i}.csv" for i in ["0-250", "250-500", "500-750", "750-1250", "1250-end"]]
  
@@ -45,30 +46,34 @@ def load_and_merge_data(data_dir="data/raw"):
             f"Please make sure the ZIP files have been extracted correctly or that you know the path to your CSV files."
         )
     # -----------------------------------------------------------------
- 
+
+    # Batch Loading Loop
     review_dfs = []
     for file in existing_review_files:
         print(f"Loading: {file}")
  
-      
+        # Engine Config: quoting=3 ignores broken quote tokens; bad lines are dropped
         temp = pd.read_csv(
             file,
             quoting=3,          
             engine='python',    
             on_bad_lines='skip' 
         )
- 
+
+        # Header Sanitization & Feature Selection (Optimizes RAM footprint)
         temp.columns = temp.columns.str.strip('"').str.strip("'")
         needed_cols = [col for col in temp.columns if col in ["review_text", "skin_type", "skin_tone", "product_id"] or "rating" in col.lower()]
         review_dfs.append(temp[needed_cols])
- 
+
+    # Consolidation and String Stripping
     df_reviews = pd.concat(review_dfs, ignore_index=True)
  
     if "review_text" in df_reviews.columns:
         df_reviews["review_text"] = df_reviews["review_text"].astype(str).str.strip('"').str.strip("'")
  
     print(f"Total Number of Review Lines: {len(df_reviews)}")
- 
+
+    # Metadata Enrichment (Left-Join with Product Info)
     product_file = os.path.join(data_dir, "product_info.csv")
     if not os.path.exists(product_file) and os.path.exists("product_info.csv"):
         product_file = "product_info.csv"
@@ -78,7 +83,7 @@ def load_and_merge_data(data_dir="data/raw"):
         df_products = pd.read_csv(product_file, engine='python', on_bad_lines='skip')
         df_products.columns = df_products.columns.str.strip('"').str.strip("'")
  
-        # Sadece gerekli sütunları filtrele
+        
         valid_prod_cols = [c for c in ["product_id", "ingredients", "highlights"] if c in df_products.columns]
         df_products = df_products[valid_prod_cols]
  
@@ -86,14 +91,18 @@ def load_and_merge_data(data_dir="data/raw"):
     else:
         print(" Warning: ‘product_info.csv’ not found; proceeding with review data only.")
         df = df_reviews
- 
+
+    # Harmonize target variable label
     rating_col = find_rating_column(df)
     if rating_col != "rating":
         df = df.rename(columns={rating_col: "rating"})
       
     return df
  
-# Akışı başlatıyoruz
+
+# =====================================================================
+# RUNTIME INVOCATION
+# =====================================================================
 extract_zip_files()
 raw_df = load_and_merge_data()
 print("\nStep 1 Successfully Completed! ‘raw_df’ has been loaded into memory.")
