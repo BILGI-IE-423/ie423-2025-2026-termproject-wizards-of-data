@@ -1,4 +1,37 @@
-# Train - Test Split
+import os
+import re
+import numpy as np
+import pandas as pd
+import torch
+import joblib
+ 
+from sklearn.model_selection import train_test_split, StratifiedKFold, GridSearchCV, cross_val_score
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import LinearSVC
+from sklearn.calibration import CalibratedClassifierCV
+from sklearn.dummy import DummyClassifier
+from sklearn.metrics import balanced_accuracy_score, f1_score, roc_auc_score
+from sklearn.pipeline import Pipeline
+ 
+import warnings
+warnings.filterwarnings("ignore")
+
+# Transformer Environment Setup
+try:
+    from transformers import pipeline
+    print("Hugging Face Transformers is ready.")
+except ImportError:
+    print("Installing Transformers package... Please wait.")
+    os.system("pip install -q transformers")
+    from transformers import pipeline
+
+# [ VALIDATION FRAMEWORK ]
+# Train-Test Split with Stratification to preserve original class distribution
 df_train, df_test = train_test_split(
     df_hf_processed,
     test_size=0.2,
@@ -9,7 +42,8 @@ df_train, df_test = train_test_split(
 y_train_before = df_train["target"].value_counts().sort_index()
 min_binary_size = df_train["target"].value_counts().min()
  
-# Undersampling
+# [ DATA BALANCING SUITE ]
+# Addressing class imbalance via dynamic majority undersampling
 df_train_balanced = (
     df_train
     .groupby("target", group_keys=False)
@@ -19,13 +53,16 @@ df_train_balanced = (
  
 y_train_after = df_train_balanced["target"].value_counts().sort_index()
  
-# Feature Engineering
+# [ LOCAL FEATURE ALIGNMENT ]
+# Syncing feature engineering engine across train/test splits
 df_train_feat = engineer_features(df_train_balanced)
 df_test_feat = engineer_features(df_test)
  
 y_train = df_train_feat["target"].values
 y_test = df_test_feat["target"].values
  
+# [ MULTI-MODAL FEATURE MAPPING ]
+# Mapping explicit text matrices, product metadata, and DeBERTa ABSA layers
 absa_score_cols = ["absa_skin_aspect", "absa_hair_aspect", "absa_product_aspect"]
 absa_flag_cols  = ["absa_skin_available", "absa_hair_available", "absa_product_available"]
 other_numeric   = [
@@ -37,6 +74,8 @@ other_numeric   = [
 categorical_cols = ["skin_type", "skin_tone"]
 text_col = "review_text"
  
+# [ PIPELINE PREPROCESSING ARCHITECTURE ]
+# Assembling TF-IDF vectorization and scaling rules into an automated ColumnTransformer
 preprocessor = ColumnTransformer(
     transformers=[
         ("text", TfidfVectorizer(max_features=1500, stop_words="english", dtype=np.float32), text_col),
@@ -63,7 +102,8 @@ cv_strategy = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
  
 model_results = {}
  
-# Baseline Model
+# [ BENCHMARK BASELINE ]
+# Instantiating a Dummy Classifier for empirical performance floor validation
 print(">> Training Majority Baseline Model...")
 dummy_pipe = Pipeline([
     ("preprocess", preprocessor),
@@ -90,7 +130,10 @@ model_results["Majority Baseline"] = {
     "probs": dummy_probs
 }
  
+# [ MODEL CONFIGURATION & PARAMETER MATRIX ]
+# Targets RQ2 & RQ3: Testing multi-family architectures (Linear, Ensemble, Margin-based)
 param_grids = {
+    "Helvetica/Logistic Regression": {"model__C": [0.1, 1.0, 10.0]}, # (Örnek isimlendirme korundu)
     "Logistic Regression": {"model__C": [0.1, 1.0, 10.0]},
     "Random Forest": {"model__max_depth": [5, 10, 15], "model__n_estimators": [50, 100]},
     "SVM (Linear)": {"model__estimator__C": [0.1, 0.5, 1.0]}
@@ -102,6 +145,8 @@ base_models = {
     "SVM (Linear)": CalibratedClassifierCV(LinearSVC(dual=False, random_state=42), cv=3)
 }
  
+# [ HYPERPARAMETER OPTIMIZATION LOOP ]
+# Targets RQ2 & RQ3: Executes Cross-Validated Hyperparameter Search
 for name, model in base_models.items():
     print(f">> Running hyperparameter tuning for {name}...")
  
@@ -121,7 +166,6 @@ for name, model in base_models.items():
     grid_search.fit(df_train_feat, y_train)
     best_model = grid_search.best_estimator_
  
-   
     cv_mean = grid_search.best_score_
     cv_std = grid_search.cv_results_['std_test_score'][grid_search.best_index_]
  
@@ -139,7 +183,8 @@ for name, model in base_models.items():
     }
     print(f"   Best Params: {grid_search.best_params_} | Unbiased CV F1: {cv_mean:.4f}")
  
-# Joblib Serialization
+# [ MLOPS SERIALIZATION ]
+# Encapsulates all experimental configurations and arrays for down-stream evaluation (Cell 4)
 joblib.dump({
     "y_train_before": y_train_before,
     "y_train_after": y_train_after,
@@ -149,4 +194,4 @@ joblib.dump({
     "absa_flag_distributions": absa_flag_distributions
 }, "data/model_outputs.joblib")
  
-print("\n✅ CELL 2 SUCCESSFULLY COMPLETED AND STORED VIA JOBLIB!")
+print("\n✅ CELL SUCCESSFULY COMPLETED AND STORED VIA JOBLIB!")
