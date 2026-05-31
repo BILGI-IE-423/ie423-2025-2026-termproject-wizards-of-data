@@ -1,118 +1,99 @@
+# =====================================================================
+# 1.LOAD DATA & MERGE
+# =====================================================================
 import os
-import sys
+import zipfile
+import gc
 import pandas as pd
-
-
-def load_data(data_dir: str):
-    print("\n" + "="*50)
-    print("              LOADING DATA")
-    print("="*50)
-
-    # List of review CSV files to load
-    review_files = [
-        os.path.join(data_dir, "reviews_0-250.csv"),
-        os.path.join(data_dir, "reviews_250-500.csv"),
-        os.path.join(data_dir, "reviews_500-750.csv"),
-        os.path.join(data_dir, "reviews_750-1250.csv"),
-        os.path.join(data_dir, "reviews_1250-end.csv")
-    ]
-
-    # Check if all review files exist
-    for f in review_files:
-        if not os.path.exists(f):
-            print(f"Missing file: {f}")
-            sys.exit(1)
-
-    # Load and concatenate all review datasets
-    df_reviews = pd.concat(
-        [pd.read_csv(f, low_memory=False) for f in review_files],
-        ignore_index=True
-    )
-
-    # Define product dataset path
-    product_path = os.path.join(data_dir, "product_info.csv")
-    
-    # Check if product file exists
-    if not os.path.exists(product_path):
-        print(" Missing product_info.csv")
-        sys.exit(1)
-
-    # Load product dataset
-    df_products = pd.read_csv(product_path)
-
-    print("Data successfully loaded")
-    return df_reviews, df_products
-
-
-def print_basic_info(df, name):
-    print("\n" + "="*50)
-    print(f"              {name} DATASET")
-    print("="*50)
-
-    # Display dataset shape (rows, columns)
-    print("\nShape:")
-    print(df.shape)
-
-    print("\nColumns:")
-    print(df.columns.tolist())
-
-    print("\n Data Types:")
-    print(df.dtypes)
-
-    print("\nFirst 5 rows:")
-    print(df.head())
-
-    print("\n Missing Values:")
-    print(df.isnull().sum())
-
-    print("\nBasic Statistics:")
-    print(df.describe())
-
-    print("\n" + "-"*50)
-
-
-if __name__ == "__main__":
-    # Get repository root directory (works for script or notebook)
-    try:
-        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    except NameError:
-        repo_root = os.getcwd()
-
-    # Set working directory to repo root
-    os.chdir(repo_root)
-
-    data_dir = os.path.join("data", "raw")
-    tables_dir = os.path.join("outputs", "tables")
-
-    # Load datasets
-    df_reviews, df_products = load_data(data_dir)
-
-    print_basic_info(df_reviews, "REVIEWS")
-    print_basic_info(df_products, "PRODUCTS")
-
-    #  UNIQUE VALUE ANALYSIS for selected columns
-    columns_to_check = ["skin_type", "skin_tone", "hair_color"]
-
-    print("\n" + "="*50)
-    print("        UNIQUE VALUE ANALYSIS (REVIEWS/skin_type,skin_tone,hair_color)")
-    print("="*50)
-
-    # Loop through selected columns
-    for col in columns_to_check:
-        print("\n" + "-"*40)
-        print(f"Column: {col}")
-        print("-"*40)
-
-        if col in df_reviews.columns:
-            unique_vals = sorted(df_reviews[col].dropna().unique())
-
-            print(f"Total unique values: {len(unique_vals)}")
-            print("Values:")
-
-            # Print each unique value
-            for val in unique_vals:
-                print(f"  - {val}")
-        else:
-            print(" Column not found")
-
-    print("\n" + "="*50)
+import numpy as np
+ 
+def extract_zip_files(zip_dir="data/raw", extract_to="data/raw"):
+    print("--- Opening Zip Files ---")
+    if not os.path.exists(zip_dir):
+        os.makedirs(extract_to, exist_ok=True)
+        zip_dir = "."
+ 
+    for file in os.listdir(zip_dir):
+        if file.endswith(".zip"):
+            file_path = os.path.join(zip_dir, file)
+            print(f"Opening: {file_path}")
+            with zipfile.ZipFile(file_path, 'r') as zip_ref:
+                zip_ref.extractall(extract_to)
+ 
+def find_rating_column(df):
+    possible_cols = ["rating", "rating_x", "rating_y"]
+    for col in possible_cols:
+        if col in df.columns: return col
+    rating_like_cols = [col for col in df.columns if "rating" in col.lower()]
+    if len(rating_like_cols) > 0: return rating_like_cols[0]
+    raise KeyError("The Rating column was not found.")
+ 
+def load_and_merge_data(data_dir="data/raw"):
+    print("\n--- Data Upload and Merging Has Begun ---")
+ 
+    review_files_raw = [os.path.join(data_dir, f"reviews_{i}.csv") for i in ["0-250", "250-500", "500-750", "750-1250", "1250-end"]]
+    review_files_root = [f"reviews_{i}.csv" for i in ["0-250", "250-500", "500-750", "750-1250", "1250-end"]]
+ 
+    existing_review_files = [f for f in review_files_raw if os.path.exists(f)]
+    if not existing_review_files:
+        existing_review_files = [f for f in review_files_root if os.path.exists(f)]
+    # -----------------------------------------------------------------
+ 
+    if not existing_review_files:
+        raise FileNotFoundError(
+            f" ERROR: The required ‘reviews_*.csv’ files were not found in the ‘{data_dir}’ folder or the root directory!\n"
+            f"Please make sure the ZIP files have been extracted correctly or that you know the path to your CSV files."
+        )
+    # -----------------------------------------------------------------
+ 
+    review_dfs = []
+    for file in existing_review_files:
+        print(f"Loading: {file}")
+ 
+      
+        temp = pd.read_csv(
+            file,
+            quoting=3,          
+            engine='python',    
+            on_bad_lines='skip' 
+        )
+ 
+        temp.columns = temp.columns.str.strip('"').str.strip("'")
+        needed_cols = [col for col in temp.columns if col in ["review_text", "skin_type", "skin_tone", "product_id"] or "rating" in col.lower()]
+        review_dfs.append(temp[needed_cols])
+ 
+    df_reviews = pd.concat(review_dfs, ignore_index=True)
+ 
+    if "review_text" in df_reviews.columns:
+        df_reviews["review_text"] = df_reviews["review_text"].astype(str).str.strip('"').str.strip("'")
+ 
+    print(f"Total Number of Review Lines: {len(df_reviews)}")
+ 
+    product_file = os.path.join(data_dir, "product_info.csv")
+    if not os.path.exists(product_file) and os.path.exists("product_info.csv"):
+        product_file = "product_info.csv"
+ 
+    if os.path.exists(product_file):
+        print(f"Loading: {product_file}")
+        df_products = pd.read_csv(product_file, engine='python', on_bad_lines='skip')
+        df_products.columns = df_products.columns.str.strip('"').str.strip("'")
+ 
+        # Sadece gerekli sütunları filtrele
+        valid_prod_cols = [c for c in ["product_id", "ingredients", "highlights"] if c in df_products.columns]
+        df_products = df_products[valid_prod_cols]
+ 
+        df = pd.merge(df_reviews, df_products, on="product_id", how="left")
+    else:
+        print(" Warning: ‘product_info.csv’ not found; proceeding with review data only.")
+        df = df_reviews
+ 
+    rating_col = find_rating_column(df)
+    if rating_col != "rating":
+        df = df.rename(columns={rating_col: "rating"})
+      
+    return df
+ 
+# Akışı başlatıyoruz
+extract_zip_files()
+raw_df = load_and_merge_data()
+print("\nStep 1 Successfully Completed! ‘raw_df’ has been loaded into memory.")
