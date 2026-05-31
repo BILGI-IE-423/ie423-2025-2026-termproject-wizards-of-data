@@ -22,13 +22,13 @@ In addition to predictive modeling, the study investigates the impact of user–
 ### Research Questions
 
 **RQ1 — Sentiment Prediction**
-To what extent can customer sentiment be predicted using review text, product attributes, ingredient information, and aspect-based sentiment features?
+How accurately can product ratings be predicted using customer review sentiment analysis, product-related information, review content, and engineered product features?
 
 **RQ2 — User–Product Compatibility**
-Does alignment between user characteristics (such as skin type, skin tone, and hair-related attributes) and product features lead to more positive customer sentiment?
+Do users give higher ratings to products when their personal characteristics are aligned with product highlights?
 
 **RQ3 — Prediction Errors and Model Limitations**
-What common characteristics are observed among misclassified reviews, and what do these errors reveal about the limitations of sentiment prediction models?
+How does the performance of different machine learning algorithms compare in predicting product ratings, and which model provides the highest predictive accuracy?
 
 
 ## Repository Structure
