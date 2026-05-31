@@ -60,6 +60,6 @@ data/
 
 The file can also be regenerated at any time by running:
 
-[scripts/02_preprocess_data.py]
+scripts/02_preprocess_data.py
 
 
