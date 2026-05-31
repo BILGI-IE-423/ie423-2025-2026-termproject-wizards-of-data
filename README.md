@@ -55,7 +55,26 @@ ie423-2025-2026-termproject-wizards-of-data/
 │   └── tables/                             • Generated summary performance and distribution tables (CSVs).
 └──
 ```
+## Project Summary
 
+This project develops an end-to-end machine learning pipeline for analyzing customer sentiment in Sephora skincare reviews by combining high-dimensional text data, product attributes, ingredient information, and user characteristics.
+
+* **The Dataset:** Built upon a massive raw corpus comprising over **478,000 review lines**.
+* **Core Innovation:** Integration of deep-learning semantic insights extracted via a **Hugging Face DeBERTa-v3 Aspect-Based Sentiment Analysis (ABSA)** layer, specifically isolating customer feedback across three distinct target dimensions: *Skin, Hair, and General Product* aspects.
+* **Imbalance Resolution:** Mitigated a severe **79.2% raw negative/neutral class bias** by implementing a targeted **undersampling strategy**, establishing a perfectly balanced subset of **1,664 reviews (832 negative/neutral and 832 positive rows)** for robust exploratory data analysis and model training.
+* **Domain Feature Engineering:** Embedded a custom **User–Product Compatibility Alignment Layer** that flags direct matches between a consumer’s biological traits (*skin type, skin tone, hair attributes*) and a product’s specific formulation.
+* **Model Optimization:** Systematically trained and optimized multiple predictive architectures (**Majority Baseline, Logistic Regression, Random Forest, and Linear SVM**) using **GridSearchCV** combined with a robust **Stratified 3-Fold Cross-Validation** strategy to eliminate data leakage.
+
+While tree ensembles captured high localized recall, the calibrated **Linear SVM** emerged as our operational champion due to its superior discriminatory stability within high-dimensional sparse vector spaces.
+
+---
+
+* **Best Model:** SVM (Linear)
+* **Features Used:** TF-IDF Vectorization + DeBERTa ABSA Sentiments + User-Product Alignment Rules
+* **Final Performance Metrics:** 
+  * Test Macro F1-Score: **0.761**
+  * ROC-AUC Score: **0.909**
+  * Balanced Accuracy: **84.7%** 
 ## Installation
 ```text
 pip install -r requirements.txt
