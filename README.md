@@ -48,7 +48,8 @@ pip install -r requirements.txt
 ```text
 python scripts/01_load_data.py
 python scripts/02_preprocess_data.py
-python scripts/03_basic_eda.py
+python scripts/03_model_training.py
+python scripts/04_model_evaluation
 ```
 > **Note:** Make sure to place the raw dataset files in the `data/raw/` directory before running the scripts.  
 > For detailed instructions, refer to `data/README.md`.
