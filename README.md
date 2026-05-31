@@ -66,7 +66,6 @@ This project develops an end-to-end machine learning pipeline for analyzing cust
 * **Model Optimization:** Systematically trained and optimized multiple predictive architectures (**Majority Baseline, Logistic Regression, Random Forest, and Linear SVM**) using **GridSearchCV** combined with a robust **Stratified 3-Fold Cross-Validation** strategy to reduce overfitting and improve generalization performance.
 * **Performance Comparison:** Rather than a single model overwhelmingly dominating all aspects, the execution metrics revealed shared strengths across candidate architectures. **Logistic Regression** achieved the highest Macro F1-Score (**0.7684**), **Random Forest** achieved the highest Balanced Accuracy (**0.8658**), while **Linear SVM** delivered the highest overall discriminatory power with an ROC-AUC Score of **0.9085**. The relatively narrow performance margins among these three tuned algorithms indicate that our engineered domain feature space contributed substantially to stable predictive success.
 
----
 
 * **Features Used:** TF-IDF Vectorization + DeBERTa ABSA Sentiments + User-Product Alignment Rules
 * **Final Performance Breakdown:**
