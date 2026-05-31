@@ -161,6 +161,7 @@ if "raw_df" not in globals():
 # 1. Sanitize & Stratify Data
 df_subsampled = clean_build_and_subsample(raw_df, sample_size=5000)
 # 2. Extract Deep Learning ABSA Payloads
+# Targets RQ1: Triggers DeBERTa text-pair classification pipeline to resolve aspect polarities
 df_hf_processed = extract_absa_features_pure_hf(df_subsampled)
 
 # 3. Compute Structural Metrics & Quality Distributions
@@ -172,6 +173,7 @@ for col in ["absa_skin_available", "absa_hair_available", "absa_product_availabl
     absa_flag_distributions[col] = dist.to_dict()
 
 # 4. Trigger Feature Engineering & Export Golden Dataset for EDA/Modeling
+# Targets RQ2: Maps metadata matrices prior to final serialization
 print(">> Preparing a clean, non-skewed dataset copy for EDA plots...")
 df_eda_save = engineer_features(df_hf_processed.copy())
 os.makedirs("data", exist_ok=True)
