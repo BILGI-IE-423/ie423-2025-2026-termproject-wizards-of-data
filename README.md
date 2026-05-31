@@ -36,7 +36,7 @@ ie423-2025-2026-termproject-wizards-of-data/
 
 ├── visuals/                                • Generated analysis results and assets.  
 │   ├── figures/                            • Saved plots and evaluation visualizations (ROC, PR curves, etc.). 
-│   └──tables/                             • Generated summary performance and distribution tables (CSVs).
+│   └──tables/                              • Generated summary performance and distribution tables (CSVs).
 └──
 ```
 
