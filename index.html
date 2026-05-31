@@ -97,6 +97,7 @@
   }
   .hero-inner {
     position: relative; z-index: 1; text-align: center; max-width: 900px;
+    animation: fadeUp .9s ease both;
   }
   .hero-badge {
     display: inline-block;
@@ -121,7 +122,7 @@
   .team-chip {
     background: var(--bg-card2); border: 1px solid var(--border);
     color: var(--text); font-size: .85rem; padding: .4rem 1rem;
-    border-radius: 99px; font-weight: 500;
+    border-radius: 99px; font-weight: 400;
     transition: border-color .2s, transform .2s;
   }
   .team-chip:hover { border-color: var(--accent); transform: translateY(-2px); }
@@ -135,13 +136,14 @@
   }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 4px 48px rgba(160,116,58,.35); }
 
-  /* ─── LAYOUT & SECTIONS ─── */
+  /* ─── LAYOUT ─── */
   main { position: relative; z-index: 1; }
   .section {
-    max-width: 1100px; margin: 0 auto; padding: 6rem 2rem;
+    max-width: 1100px; margin: 0 auto; padding: 5rem 2rem;
   }
   .section + .section { border-top: 1px solid var(--border); }
-  
+
+  /* ─── SECTION LABELS ─── */
   .section-label {
     font-size: .75rem; font-weight: 600; letter-spacing: .14em;
     text-transform: uppercase; color: var(--accent);
@@ -151,20 +153,14 @@
     content: ''; display: block; width: 28px; height: 1px; background: var(--accent);
   }
   .section-title {
-    font-family: var(--font-serif); font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-family: var(--font-serif); font-size: clamp(1.7rem, 4vw, 2.6rem);
     line-height: 1.2; margin-bottom: 1.25rem;
   }
   .section-intro {
-    color: var(--text-muted); font-size: 1.05rem; max-width: 780px; font-weight: 300;
-    margin-bottom: 3rem;
+    color: var(--text-muted); font-size: 1.05rem; max-width: 740px; font-weight: 300;
   }
 
   /* ─── CARDS ─── */
-  .card-grid {
-    display: grid; gap: 1.5rem;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    margin-bottom: 2rem;
-  }
   .card {
     background: var(--bg-card); border: 1px solid var(--border);
     border-radius: var(--radius-lg); padding: 2rem;
@@ -175,16 +171,20 @@
     box-shadow: var(--shadow);
     transform: translateY(-3px);
   }
+  .card-grid {
+    display: grid; gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
   .card-title {
-    font-family: var(--font-serif); font-size: 1.25rem;
+    font-family: var(--font-serif); font-size: 1.2rem;
     margin-bottom: .75rem; color: var(--accent);
   }
   .card p { color: var(--text-muted); font-size: .95rem; }
 
   /* ─── PIPELINE STEPS ─── */
   .pipeline {
-    display: grid; gap: 1.25rem;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    display: grid; gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     counter-reset: step;
   }
   .pipeline-step {
@@ -197,123 +197,271 @@
   .pipeline-step::before {
     content: counter(step,'0') counter(step);
     position: absolute; top: -.5rem; right: .75rem;
-    font-family: var(--font-serif); font-size: 4.5rem; font-weight: 700;
-    color: rgba(160,116,58,.06); line-height: 1; pointer-events: none;
+    font-family: var(--font-serif); font-size: 5rem; font-weight: 700;
+    color: rgba(160,116,58,.08); line-height: 1; pointer-events: none;
   }
   .pipeline-step:hover { border-color: rgba(160,116,58,.3); transform: translateY(-3px); }
-  .pipeline-step h3 { font-size: 1rem; font-weight: 600; margin-bottom: .5rem; color: var(--text); }
+  .pipeline-step h3 {
+    font-size: 1rem; font-weight: 600; margin-bottom: .5rem; color: var(--text);
+  }
   .pipeline-step p { font-size: .88rem; color: var(--text-muted); }
 
-  /* ─── RESEARCH QUESTIONS BREAKDOWN ─── */
-  .rq-container {
-    margin-bottom: 4rem; border: 1px solid var(--border); border-radius: var(--radius-lg);
-    background: var(--bg-card); overflow: hidden; box-shadow: var(--shadow);
-  }
+  /* ─── RQ SECTIONS ─── */
   .rq-header {
     background: linear-gradient(135deg, var(--bg-card2) 0%, var(--bg-card) 100%);
-    padding: 2.5rem; border-bottom: 1px solid var(--border); position: relative;
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 2.5rem; margin-bottom: 2rem;
+    position: relative; overflow: hidden;
   }
   .rq-header::after {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
     background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   }
-  .rq-number { font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: .5rem; }
-  .rq-question { font-family: var(--font-serif); font-size: clamp(1.3rem, 3vw, 1.7rem); line-height: 1.3; color: var(--text); }
-  
-  .rq-body { padding: 2.5rem; }
-  .rq-subgrid {
-    display: grid; gap: 1.25rem; grid-template-columns: repeat(4, 1fr); margin-bottom: 2.5rem;
+  .rq-number {
+    font-size: .75rem; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: .5rem;
   }
-  @media (max-width: 992px) { .rq-subgrid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 576px) { .rq-subgrid { grid-template-columns: 1fr; } }
+  .rq-question {
+    font-family: var(--font-serif); font-size: clamp(1.2rem, 3vw, 1.6rem);
+    line-height: 1.3; color: var(--text);
+  }
+  .rq-grid {
+    display: grid; gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    margin-bottom: 2rem;
+  }
+  .rq-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.75rem;
+    transition: border-color .2s, transform .2s;
+  }
+  .rq-card:hover { border-color: rgba(46,127,160,.3); transform: translateY(-2px); }
+  .rq-card-label {
+    font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--accent2); margin-bottom: .6rem;
+  }
+  .rq-card h3 {
+    font-family: var(--font-serif); font-size: 1.05rem; margin-bottom: .6rem;
+  }
+  .rq-card p { font-size: .9rem; color: var(--text-muted); }
 
-  .rq-block-card {
-    background: var(--bg-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem;
-    border-top: 3px solid var(--accent);
-  }
-  .rq-block-card.methodology { border-top-color: var(--accent); }
-  .rq-block-card.experiments { border-top-color: var(--accent2); }
-  .rq-block-card.results { border-top-color: var(--green); }
-  .rq-block-card.interpretation { border-top-color: var(--accent3); }
-  
-  .rq-block-label { font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: .4rem; }
-  .rq-block-card h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: .5rem; color: var(--text); }
-  .rq-block-card p { font-size: .85rem; color: var(--text-muted); line-height: 1.6; }
-
-  /* ─── ANSWER & ACCENT BOXES ─── */
+  /* ─── ANSWER BOX ─── */
   .answer-box {
-    background: linear-gradient(135deg, rgba(160,116,58,.05), rgba(46,127,160,.03));
-    border: 1px solid rgba(160,116,58,.25); border-radius: var(--radius);
-    padding: 1.5rem 2rem; position: relative; margin-top: 1.5rem;
+    background: linear-gradient(135deg, rgba(160,116,58,.07), rgba(46,127,160,.05));
+    border: 1px solid rgba(160,116,58,.3); border-radius: var(--radius);
+    padding: 1.75rem 2rem; margin-top: 2rem;
+    position: relative;
   }
   .answer-box::before {
-    content: '✦ Key Findings & Interpretation'; position: absolute; top: -1px; left: 1.5rem;
-    background: var(--bg-card); color: var(--accent);
+    content: '✦ Answer'; position: absolute; top: -1px; left: 1.5rem;
+    background: var(--bg); color: var(--accent);
     font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
     padding: 0 .5rem; transform: translateY(-50%);
   }
-  .answer-box p { font-size: .95rem; color: var(--text); }
+  .answer-box p { font-size: .97rem; color: var(--text); }
 
   /* ─── STAT HIGHLIGHT ─── */
-  .stat-row { display: flex; flex-wrap: wrap; gap: 1rem; margin: 2rem 0; }
-  .stat { background: var(--bg-card2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; flex: 1; min-width: 180px; text-align: center; }
-  .stat-value { font-family: var(--font-serif); font-size: 2.2rem; color: var(--accent); display: block; line-height: 1; }
-  .stat-label { font-size: .8rem; color: var(--text-muted); margin-top: .4rem; }
+  .stat-row {
+    display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0;
+  }
+  .stat {
+    background: var(--bg-card2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem 1.75rem; flex: 1; min-width: 160px;
+    text-align: center;
+  }
+  .stat-value {
+    font-family: var(--font-serif); font-size: 2rem; color: var(--accent);
+    display: block; line-height: 1;
+  }
+  .stat-label { font-size: .8rem; color: var(--text-muted); margin-top: .3rem; }
 
-  /* ─── FIGURES ─── */
-  .figure-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin: 2.5rem 0; box-shadow: var(--shadow); }
-  .figure-card img { width: 100%; display: block; height: auto; object-fit: cover; }
-  .figure-caption { padding: 1rem 1.5rem; border-top: 1px solid var(--border); font-size: .85rem; color: var(--text-muted); font-style: italic; }
+  /* ─── FIGURE CARDS ─── */
+  .figure-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden; margin: 2rem 0;
+    box-shadow: var(--shadow);
+    transition: transform .3s, box-shadow .3s;
+  }
+  .figure-card:hover {
+    transform: translateY(-4px) scale(1.005);
+    box-shadow: var(--shadow-lg);
+  }
+  .figure-card img {
+    width: 100%; display: block;
+    transition: transform .5s ease;
+  }
+  .figure-card:hover img { transform: scale(1.02); }
+  .figure-caption {
+    padding: 1rem 1.5rem; border-top: 1px solid var(--border);
+    font-size: .85rem; color: var(--text-muted);
+    font-style: italic;
+  }
   .figure-caption strong { color: var(--accent); font-style: normal; }
 
   /* ─── TABLES ─── */
-  .table-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin: 2rem 0; box-shadow: var(--shadow); }
-  .table-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: .75rem; background: rgba(0,0,0,0.01); }
+  .table-wrap {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden; margin: 2rem 0;
+    box-shadow: var(--shadow);
+  }
+  .table-header {
+    padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: .75rem;
+  }
+  .table-icon { font-size: 1.1rem; }
   .table-title { font-size: .9rem; font-weight: 600; color: var(--text); }
-  .table-sub { font-size: .8rem; color: var(--text-dim); margin-left: auto; font-family: var(--font-mono); }
+  .table-sub { font-size: .8rem; color: var(--text-muted); margin-left: auto; }
   .table-scroll { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: .875rem; }
-  thead th { background: rgba(160,116,58,.05); color: var(--accent); font-weight: 600; padding: .85rem 1.25rem; text-align: left; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--border); white-space: nowrap; }
-  tbody tr { border-bottom: 1px solid rgba(0,0,0,.04); transition: background .15s; }
-  tbody tr:hover { background: rgba(0,0,0,.015); }
+  table {
+    width: 100%; border-collapse: collapse; font-size: .875rem;
+  }
+  thead th {
+    background: rgba(160,116,58,.07);
+    color: var(--accent); font-weight: 600;
+    padding: .85rem 1.25rem; text-align: left;
+    font-size: .78rem; letter-spacing: .06em; text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    position: sticky; top: 0;
+  }
+  tbody tr {
+    border-bottom: 1px solid rgba(0,0,0,.05);
+    transition: background .15s;
+  }
+  tbody tr:hover { background: rgba(0,0,0,.025); }
   tbody tr:last-child { border-bottom: none; }
-  tbody td { padding: .85rem 1.25rem; color: var(--text-muted); vertical-align: middle; }
+  tbody td {
+    padding: .75rem 1.25rem; color: var(--text-muted);
+    vertical-align: middle;
+  }
   tbody td:first-child { color: var(--text); font-weight: 500; }
-  
-  .badge { display: inline-block; padding: .2rem .65rem; border-radius: 99px; font-size: .75rem; font-weight: 600; }
+  .badge {
+    display: inline-block; padding: .2rem .65rem;
+    border-radius: 99px; font-size: .75rem; font-weight: 600;
+  }
   .badge-green { background: rgba(30,122,58,.10); color: var(--green); }
   .badge-blue  { background: rgba(46,127,160,.10); color: var(--accent2); }
   .badge-gold  { background: rgba(160,116,58,.12); color: var(--accent); }
   .badge-red   { background: rgba(184,48,48,.10); color: var(--red); }
-  .badge-purple{ background: rgba(124,79,160,.10); color: var(--accent3); }
 
-  /* ─── REPRODUCIBILITY CODE BLOCKS ─── */
-  .code-block { background: #f0ede8; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; font-family: var(--font-mono); font-size: .82rem; line-height: 1.8; overflow-x: auto; margin: 1rem 0; }
+  /* ─── CODE BLOCKS ─── */
+  .code-block {
+    background: #f0ede8; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    font-family: var(--font-mono); font-size: .82rem; line-height: 1.8;
+    overflow-x: auto; position: relative; margin: 1rem 0;
+  }
   .code-block .comment { color: #9a8e80; }
-  .code-block .cmd { color: var(--accent2); font-weight: 600; }
+  .code-block .cmd { color: var(--accent2); }
   .code-block .arg { color: var(--text); }
   .code-block .string { color: var(--green); }
+  .code-label {
+    font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--text-dim); background: var(--bg-card2);
+    padding: .2rem .6rem; border-radius: 4px;
+    margin-bottom: .5rem; display: inline-block;
+  }
 
-  .step-list { display: flex; flex-direction: column; gap: 1.5rem; }
-  .step-item { display: flex; gap: 1.25rem; align-items: flex-start; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; }
-  .step-num { min-width: 36px; height: 36px; border-radius: 50%; background: rgba(160,116,58,.10); border: 1px solid rgba(160,116,58,.3); color: var(--accent); font-weight: 700; font-size: .9rem; display: flex; align-items: center; justify-content: center; }
-  .step-content { flex: 1; }
-  .step-content h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: .5rem; }
+  /* ─── STEP LIST ─── */
+  .step-list { display: flex; flex-direction: column; gap: 1.25rem; }
+  .step-item {
+    display: flex; gap: 1.25rem; align-items: flex-start;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    transition: border-color .2s;
+  }
+  .step-item:hover { border-color: rgba(160,116,58,.3); }
+  .step-num {
+    min-width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(160,116,58,.10); border: 1px solid rgba(160,116,58,.3);
+    color: var(--accent); font-weight: 700; font-size: .85rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-content h3 { font-size: 1rem; font-weight: 600; margin-bottom: .4rem; }
+  .step-content p { font-size: .9rem; color: var(--text-muted); }
 
-  .repo-block { background: var(--bg-card2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; margin-top: 3rem; }
+  /* ─── LIMITATIONS ─── */
+  .limit-grid {
+    display: grid; gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  .limit-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent3);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 1.5rem; transition: transform .2s;
+  }
+  .limit-card:hover { transform: translateX(4px); }
+  .limit-card h3 { font-size: .95rem; font-weight: 600; margin-bottom: .5rem; color: var(--accent3); }
+  .limit-card p { font-size: .88rem; color: var(--text-muted); }
+
+  /* ─── REPO LINK ─── */
+  .repo-block {
+    background: var(--bg-card2); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 2rem;
+    display: flex; flex-wrap: wrap; align-items: center;
+    justify-content: space-between; gap: 1.5rem;
+  }
   .repo-text h3 { font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: .4rem; }
   .repo-text p { font-size: .9rem; color: var(--text-muted); }
-  .repo-url { font-family: var(--font-mono); font-size: .8rem; color: var(--accent2); background: rgba(46,127,160,.08); border: 1px solid rgba(46,127,160,.2); border-radius: 6px; padding: .4rem .8rem; margin-top: .5rem; display: inline-block; }
-  .repo-btn { display: inline-flex; align-items: center; gap: .6rem; background: var(--accent); color: #1a1300; font-weight: 700; font-size: .88rem; padding: .75rem 1.5rem; border-radius: var(--radius); text-decoration: none; white-space: nowrap; transition: transform .2s, box-shadow .2s; box-shadow: 0 0 24px rgba(160,116,58,.2); }
+  .repo-url {
+    font-family: var(--font-mono); font-size: .8rem; color: var(--accent2);
+    background: rgba(46,127,160,.08); border: 1px solid rgba(46,127,160,.2);
+    border-radius: 6px; padding: .4rem .8rem; margin-top: .5rem;
+    display: inline-block;
+  }
+  .repo-btn {
+    display: inline-flex; align-items: center; gap: .6rem;
+    background: var(--accent); color: #1a1300;
+    font-weight: 700; font-size: .88rem;
+    padding: .75rem 1.5rem; border-radius: var(--radius);
+    text-decoration: none; white-space: nowrap;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 0 24px rgba(160,116,58,.2);
+  }
   .repo-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 32px rgba(160,116,58,.35); }
 
-  footer { border-top: 1px solid var(--border); padding: 3rem 2rem; text-align: center; color: var(--text-dim); font-size: .85rem; }
-  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 4rem 0; }
-  mark { background: rgba(160,116,58,.12); color: var(--accent); padding: .1em .3em; border-radius: 3px; font-weight: 500; }
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem; text-align: center;
+    color: var(--text-dim); font-size: .82rem;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 3rem 0;
+  }
+
+  /* ─── HIGHLIGHT TEXT ─── */
+  mark { background: rgba(160,116,58,.15); color: var(--accent); padding: .1em .3em; border-radius: 3px; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .rq-grid { grid-template-columns: 1fr; }
+    .stat-row { flex-direction: column; }
+    .repo-block { flex-direction: column; }
+  }
 </style>
 </head>
 <body>
 
+<!-- ═══════════════════ NAV ═══════════════════ -->
 <nav>
   <div class="nav-brand">Wizards of Data · IE423</div>
   <ul class="nav-links">
@@ -327,6 +475,7 @@
   </ul>
 </nav>
 
+<!-- ═══════════════════ HERO ═══════════════════ -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
@@ -334,391 +483,572 @@
     <div class="hero-badge">IE423 · Term Project · 2025–2026</div>
     <h1 class="hero-title">Customer Satisfaction in<br/><em>Sephora Products</em></h1>
     <p class="hero-subtitle">A Data-Driven Machine Learning Approach combining NLP, Aspect-Based Sentiment Analysis, feature engineering, and predictive modeling to understand beauty product customer satisfaction.</p>
-    
-    <div style="margin-bottom: 1rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim);">Project Team Members</div>
     <div class="hero-team">
       <span class="team-chip">İlke Bakangil</span>
       <span class="team-chip">Sıla Doğan</span>
       <span class="team-chip">Avsu Evren</span>
       <span class="team-chip">Yağmur Battal</span>
     </div>
-    
     <a href="https://github.com/BILGI-IE-423/ie423-2025-2026-termproject-wizards-of-data" target="_blank" class="hero-cta">
       <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-      View Code on GitHub
+      View on GitHub
     </a>
   </div>
 </section>
 
 <main>
 
-<div id="dataset" class="section" style="border-left: 4px solid var(--accent);">
-  <div class="section-label">01 — Dataset Description</div>
+<!-- ═══════════════════ DATASET ═══════════════════ -->
+<div id="dataset" class="section reveal">
+  <div class="section-label">01 — Dataset</div>
   <h2 class="section-title">Sephora Products &amp; Skincare Reviews</h2>
-  <p class="section-intro">Our study utilizes the comprehensive Sephora platform data, merging high-dimensional unstructured review texts with product specifications to build structured data models.</p>
+  <p class="section-intro">A large-scale, multi-file dataset from Kaggle containing structured product information and unstructured customer review data, enabling both exploratory analysis and predictive machine learning.</p>
 
-  <div class="card-grid">
+  <div class="divider"></div>
+
+  <div class="card-grid" style="margin-bottom:2rem;">
     <div class="card">
-      <div class="card-title">📦 Dataset Scale</div>
-      <p>Over <mark>8,000 unique cosmetic products</mark> paired with approximately <mark>1 million raw customer reviews</mark>, presenting an extensive testbed for natural language pipelines.</p>
+      <div class="card-title">📦 Scale</div>
+      <p>Over <mark>8,000 products</mark> and approximately <mark>1 million</mark> customer reviews distributed across multiple related files — one of the largest publicly available beauty product review datasets.</p>
     </div>
     <div class="card">
-      <div class="card-title">🧱 Structured Attributes</div>
-      <p>Comprehensive metadata including brand identity, hierarchical product categories, pricing structures, raw ingredients lists, highlights, and demographic user profiles.</p>
+      <div class="card-title">🧱 Structured Features</div>
+      <p>Brand info, product categories, prices, ingredients, product highlights, product ratings, skin type, skin tone, and hair color — a rich set of both product and user attributes.</p>
     </div>
     <div class="card">
-      <div class="card-title">📝 Unstructured Content</div>
-      <p>Detailed textual customer reviews reflecting real-world user sentiment, experiences, and specific aspect-driven feedback regarding cosmetic efficacy.</p>
+      <div class="card-title">📝 Unstructured Text</div>
+      <p>Detailed free-text customer reviews providing rich feedback analyzable through Natural Language Processing and Aspect-Based Sentiment Analysis techniques.</p>
     </div>
   </div>
 
   <div class="repo-block">
     <div class="repo-text">
-      <h3>Kaggle Dataset Access Instructions</h3>
-      <p>Due to repository sizing policies, raw source files must be acquired directly from Kaggle. Download the dataset and unpack all files directly inside your local directory at <code style="color:var(--accent2)">data/raw/</code>.</p>
+      <h3>Dataset Access</h3>
+      <p>Not included in the repository due to large file size. Download from Kaggle and place all files inside <code style="color:var(--accent2)">data/raw/</code> with original filenames intact.</p>
       <a class="repo-url" href="https://www.kaggle.com/datasets/nadyinky/sephora-products-and-skincare-reviews" target="_blank">kaggle.com/datasets/nadyinky/sephora-products-and-skincare-reviews</a>
     </div>
-    <a href="https://www.kaggle.com/datasets/nadyinky/sephora-products-and-skincare-reviews" target="_blank" class="repo-btn">Download from Kaggle →</a>
+    <a href="https://www.kaggle.com/datasets/nadyinky/sephora-products-and-skincare-reviews" target="_blank" class="repo-btn">Download Dataset →</a>
   </div>
 </div>
 
-<div class="divider"></div>
-
-<div id="preprocessing" class="section" style="border-left: 4px solid var(--accent2);">
+<!-- ═══════════════════ PREPROCESSING ═══════════════════ -->
+<div id="preprocessing" class="section reveal">
   <div class="section-label">02 — Preprocessing Pipeline</div>
-  <h2 class="section-title">The Analytical Processing Pipeline</h2>
-  <p class="section-intro">A structured multi-stage data pipeline designed to parse raw data streams, apply NLP features, handle target distributions, and clean features for training.</p>
+  <h2 class="section-title">From Raw Reviews to<br/>Machine-Ready Features</h2>
+  <p class="section-intro">A multi-stage pipeline transforms raw CSV files into a structured, balanced, sentiment-enriched feature matrix ready for classification.</p>
+
+  <div class="divider"></div>
 
   <div class="pipeline">
     <div class="pipeline-step">
-      <h3>1. Extract &amp; Merge</h3>
-      <p>Consolidates diverse textual review tables into a unified dataframe, executing cross-relational merges via <code style="color:var(--accent2)">product_id</code>.</p>
+      <h3>Data Loading &amp; Merging</h3>
+      <p>Review CSV files are combined into a unified dataframe. Corrupted rows are removed, rating columns standardized, and review + product datasets merged via <code style="color:var(--accent2)">product_id</code>.</p>
     </div>
     <div class="pipeline-step">
-      <h3>2. Label Binarization</h3>
-      <p>Maps explicit user ratings into distinct target groups: <span class="badge badge-red">1–3 Stars → Class 0</span> and <span class="badge badge-green">4–5 Stars → Class 1</span>.</p>
+      <h3>Target Variable Creation</h3>
+      <p>Ratings converted to binary: <span class="badge badge-red">1–3 stars → Negative/Neutral</span> and <span class="badge badge-green">4–5 stars → Positive</span>.</p>
     </div>
     <div class="pipeline-step">
-      <h3>3. Text Cleanse</h3>
-      <p>Purges corrupted, empty, or structurally invalid text string samples, enforcing mathematical data type consistency across all rows.</p>
+      <h3>Data Cleaning</h3>
+      <p>Missing review text records cleared. Rating values converted to numeric. Invalid scores filtered. Inconsistent text values corrected.</p>
     </div>
     <div class="pipeline-step">
-      <h3>4. Stratified Subsampling</h3>
-      <p>Extracts a representative, stratified data sample of <mark>5,000 records</mark> from the full review pool to optimize computing costs during transformer inference.</p>
+      <h3>Balanced Subsampling</h3>
+      <p>A stratified sample of 5,000 reviews is selected from 797,779 reviews to reduce transformer compute cost while preserving class distribution.</p>
     </div>
     <div class="pipeline-step">
-      <h3>5. ABSA Feature Mining</h3>
-      <p>Applies <code style="color:var(--accent2)">DeBERTa-v3-base-absa</code> to capture fine-grained polarity scores specifically across skin, hair, and general categories.</p>
+      <h3>ABSA (DeBERTa)</h3>
+      <p>The <code style="color:var(--accent2)">Yangheng/deberta-v3-base-absa-v1.1</code> model extracts sentiment polarity, confidence scores, and sentiment intensity across three aspects: skin, hair, and general product.</p>
     </div>
     <div class="pipeline-step">
-      <h3>6. Feature Engineering</h3>
-      <p>Extracts text length features, active ingredient markers, product attributes, and computes customized alignment scores.</p>
+      <h3>Feature Engineering</h3>
+      <p>Review length, vegan/cruelty-free/clean beauty indicators, active ingredient presence (hyaluronic acid, niacinamide, vitamin C, etc.), and user–product alignment scores.</p>
     </div>
     <div class="pipeline-step">
-      <h3>7. Class Rebalancing</h3>
-      <p>Executes controlled undersampling workflows on overrepresented target groups to establish perfect 50/50 balance configurations.</p>
+      <h3>Class Imbalance Management</h3>
+      <p>Controlled undersampling on the majority class. Stratified train–test split. Model evaluation with Balanced Accuracy, Macro F1, ROC-AUC, and confusion matrix analysis.</p>
     </div>
   </div>
 </div>
 
-<div class="divider"></div>
+<!-- ═══════════════════ RQ1 ═══════════════════ -->
+<div id="rq1" class="section reveal">
+  <div class="section-label">03 — Research Question 1</div>
 
-<div id="research-questions" class="section" style="border-left: 4px solid var(--green);">
-  <div class="section-label">03 — Empirical Analysis</div>
-  <h2 class="section-title">Research Questions Breakdown</h2>
-  <p class="section-intro">Detailed experimental results, methodologies, and analytical interpretations across our core research objectives.</p>
+  <div class="rq-header">
+    <div class="rq-number">RQ1</div>
+    <div class="rq-question">How accurately can product ratings be predicted using customer review sentiment analysis, product-related information, review content, and engineered product features?</div>
+  </div>
 
-  <div id="rq1" class="rq-container">
-    <div class="rq-header">
-      <div class="rq-number">Research Question 1</div>
-      <div class="rq-question">How accurately can product ratings be predicted using customer review sentiment analysis, product-related information, review content, and engineered product features?</div>
+  <div class="rq-grid">
+    <div class="rq-card">
+      <div class="rq-card-label">Methodology</div>
+      <h3>Binary Classification with ABSA + TF-IDF</h3>
+      <p>Ratings between 1–3 grouped as Negative/Neutral; 4–5 as Positive. Review texts represented with TF-IDF enriched by DeBERTa ABSA aspect-level sentiment. Product characteristics (ingredients, highlights) integrated into the pipeline.</p>
     </div>
-    <div class="rq-body">
-      <div class="rq-subgrid">
-        <div class="rq-block-card methodology">
-          <div class="rq-block-label">Methodology</div>
-          <h4>ABSA + TF-IDF Fusion</h4>
-          <p>Combines sparse TF-IDF n-gram text fields with deep deep-learning features mined from DeBERTa aspect polarities.</p>
-        </div>
-        <div class="rq-block-card experiments">
-          <div class="rq-block-label">Experiments</div>
-          <h4>GridSearch Optimization</h4>
-          <p>Evaluated Logistic Regression, Random Forests, and Support Vector Machines across 80/20 train/test splits via GridSearch.</p>
-        </div>
-        <div class="rq-block-card results">
-          <div class="rq-block-label">Results</div>
-          <h4>High Predictive Bounds</h4>
-          <p>All tested models demonstrated notable predictive performance, successfully capturing cross-feature rating targets.</p>
-        </div>
-        <div class="rq-block-card interpretation">
-          <div class="rq-block-label">Interpretation</div>
-          <h4>Strong Core Signal</h4>
-          <p>The combination of aspect scores and text features uncovers significant predictive patterns in customer satisfaction metrics.</p>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <div class="table-header">
-          <span class="table-icon">🧠</span>
-          <span class="table-title">Table 0 — Aspect-Based Sentiment Feature Mining Report</span>
-          <span class="table-sub">visuals/tables/table_0_absa_report.csv</span>
-        </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th>Target Aspect Category</th><th>Data Sample Size</th><th>Aspect Extraction Coverage</th><th>Mean Model Confidence</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>General Product Context</td><td>5,000 Reviews</td><td><span class="badge badge-green">95.0%</span></td><td>0.8732</td></tr>
-              <tr><td>Skin Specific Performance</td><td>5,000 Reviews</td><td><span class="badge badge-blue">62.0%</span></td><td>0.8314</td></tr>
-              <tr><td>Hair Specific Performance</td><td>5,000 Reviews</td><td><span class="badge badge-gold">24.0%</span></td><td>0.7945</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <div class="table-header">
-          <span class="table-icon">📊</span>
-          <span class="table-title">Table 2 — Rating Prediction Model Evaluation Matrix</span>
-          <span class="table-sub">visuals/tables/table_2_model_comparison.csv</span>
-        </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th>Evaluated Model Architecture</th><th>Balanced Accuracy</th><th>Macro F1-Score</th><th>ROC-AUC Value</th><th>Selection Status</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Majority Baseline Model</td><td>0.5000</td><td>0.3012</td><td>0.5000</td><td><span class="badge badge-red">Baseline</span></td></tr>
-              <tr><td>Logistic Regression</td><td>0.8415</td><td><mark>0.7684 ★</mark></td><td>0.8992</td><td><span class="badge badge-blue">Evaluated</span></td></tr>
-              <tr><td>Random Forest Classifier</td><td><mark>0.8658 ★</mark></td><td>0.7512</td><td>0.9011</td><td><span class="badge badge-blue">Evaluated</span></td></tr>
-              <tr><td>Linear Support Vector Machine (SVM)</td><td>0.8602</td><td>0.7611</td><td><mark>0.9085 ★</mark></td><td><span class="badge badge-gold">Final Selection</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="figure-card">
-        <img src="visuals/figures/03_model_comparison_panel.png" alt="Model Comparison Curves"/>
-        <div class="figure-caption">
-          <strong>Figure 1.</strong> Evaluation Panel — Receiver Operating Characteristic (ROC) plots comparing multi-model performance curves against baseline bounds.
-          <br/><span style="font-family:var(--font-mono);font-size:.78rem;">visuals/figures/03_model_comparison_panel.png</span>
-        </div>
-      </div>
-
-      <div class="answer-box">
-        <p>Product ratings can be predicted accurately using customer review content, aspect-based sentiment information, and product-related attributes. All evaluated models achieved strong predictive performance, with ROC-AUC values above <mark>0.90</mark>. Linear SVM achieved the highest ROC-AUC score (<mark>0.9085</mark>) and was selected as the final prediction model.</p>
-      </div>
+    <div class="rq-card">
+      <div class="rq-card-label">Experiments</div>
+      <h3>Three ML Algorithms + Grid Search</h3>
+      <p>From 797,779 original reviews, a stratified sample of 5,000 was selected. 80/20 train–test split. Logistic Regression, Random Forest, and Linear SVM evaluated. GridSearchCV hyperparameter optimization applied.</p>
+    </div>
+    <div class="rq-card">
+      <div class="rq-card-label">Interpretation</div>
+      <h3>Reviews Carry Strong Predictive Signal</h3>
+      <p>Strong ROC-AUC values across all models indicate that engineered features provide high discriminatory power. DeBERTa ABSA contributes meaningful predictive information beyond traditional TF-IDF representations.</p>
     </div>
   </div>
 
-  <div id="rq2" class="rq-container">
-    <div class="rq-header">
-      <div class="rq-number">Research Question 2</div>
-      <div class="rq-question">Do users give higher ratings to products when their personal characteristics are aligned with product highlights?</div>
+  <!-- ABSA Table -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <span class="table-icon">🧠</span>
+      <span class="table-title">Table 0 — ABSA Feature Extraction Report</span>
+      <span class="table-sub">visuals/tables/table_0_absa_report.csv</span>
     </div>
-    <div class="rq-body">
-      <div class="rq-subgrid">
-        <div class="rq-block-card methodology">
-          <div class="rq-block-label">Methodology</div>
-          <h4>Deterministic Alignment Rules</h4>
-          <p>Constructed a conditional mapping profile matching user skin specifications with active formula components (e.g., dry skin with Hyaluronic Acid).</p>
-        </div>
-        <div class="rq-block-card experiments">
-          <div class="rq-block-label">Experiments</div>
-          <h4>Segment Variance Testing</h4>
-          <p>Partitioned observations into explicit Aligned (1) versus Unaligned (0) segments to isolate variations across mean score groups.</p>
-        </div>
-        <div class="rq-block-card results">
-          <div class="rq-block-label">Results</div>
-          <h4>Significant Margin Gains</h4>
-          <p>The subpopulation meeting explicit alignment criteria displayed measurable increases in final product evaluations.</p>
-        </div>
-        <div class="rq-block-card interpretation">
-          <div class="rq-block-label">Interpretation</div>
-          <h4>Personalization Benefits</h4>
-          <p>Validates the core hypothesis that target matching profiles positively influence subjective product feedback scores.</p>
-        </div>
-      </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Aspect</th><th>Total Reviews</th><th>Aspect Mentioned</th><th>Coverage (%)</th><th>Avg Confidence</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>General Product</td><td>5,000</td><td>~4,750</td><td><span class="badge badge-green">95.0%</span></td><td>0.87</td></tr>
+          <tr><td>Skin Sentiment</td><td>5,000</td><td>~3,100</td><td><span class="badge badge-blue">62.0%</span></td><td>0.83</td></tr>
+          <tr><td>Hair Sentiment</td><td>5,000</td><td>~1,200</td><td><span class="badge badge-gold">24.0%</span></td><td>0.79</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p style="font-size:.82rem;color:var(--text-muted);margin-top:-.75rem;margin-bottom:2rem;">Source: <code>visuals/tables/table_0_absa_report.csv</code> — generated by <code>scripts/basic_eda.py</code></p>
 
-      <div class="table-wrap">
-        <div class="table-header">
-          <span class="table-icon">🎯</span>
-          <span class="table-title">Table 4 — User-Product Personalization Profile Analysis</span>
-          <span class="table-sub">visuals/tables/table_4_rq2_alignment_analysis.csv</span>
-        </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th>Alignment Profile Assignment</th><th>Sample Size (N)</th><th>Observed Mean Rating</th><th>Net Rating Shift</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><span class="badge badge-green">Profile Aligned (1)</span></td><td>412 Samples</td><td>3.1231 Stars</td><td><span class="badge badge-green">+1.3132 Gain</span></td></tr>
-              <tr><td><span class="badge badge-red">Profile Unaligned (0)</span></td><td>4,588 Samples</td><td>1.8099 Stars</td><td><em>Baseline Scale</em></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <!-- Model Comparison Table -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <span class="table-icon">📊</span>
+      <span class="table-title">Table 2 — Model Comparison</span>
+      <span class="table-sub">visuals/tables/table_2_model_comparison.csv</span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Model</th><th>Balanced Accuracy</th><th>Macro F1-Score</th><th>ROC-AUC</th><th>Selection</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Majority Baseline</td><td>0.5000</td><td>~0.30</td><td>0.50</td>
+            <td><span class="badge badge-red">Baseline</span></td>
+          </tr>
+          <tr>
+            <td>Logistic Regression</td><td>0.84</td>
+            <td><mark style="background:rgba(30,122,58,.13);color:var(--green);">0.7684 ★</mark></td>
+            <td>0.90</td>
+            <td><span class="badge badge-blue">Evaluated</span></td>
+          </tr>
+          <tr>
+            <td>Random Forest</td>
+            <td><mark style="background:rgba(30,122,58,.13);color:var(--green);">0.8658 ★</mark></td>
+            <td>0.75</td><td>0.90</td>
+            <td><span class="badge badge-blue">Evaluated</span></td>
+          </tr>
+          <tr>
+            <td>Linear SVM</td><td>0.86</td><td>0.76</td>
+            <td><mark style="background:rgba(30,122,58,.13);color:var(--green);">0.9085 ★</mark></td>
+            <td><span class="badge badge-gold">Final Model</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p style="font-size:.82rem;color:var(--text-muted);margin-top:-.75rem;margin-bottom:2rem;">Source: <code>visuals/tables/table_2_model_comparison.csv</code> — generated by <code>scripts/basic_eda.py</code></p>
 
-      <div class="answer-box">
-        <p>Users tended to give higher ratings to products that were aligned with their personal characteristics. The aligned group achieved an average rating approximately <mark>1.31 points higher</mark> than the non-aligned group, indicating a strong positive relationship between user-product compatibility and customer satisfaction.</p>
-      </div>
+  <!-- Figure -->
+  <div class="figure-card">
+    <img src="visuals/figures/03_model_comparison_panel.png" alt="Model comparison panel showing ROC curves and performance metrics for all three ML models"/>
+    <div class="figure-caption">
+      <strong>Figure 1.</strong> Model comparison panel — ROC curves and performance metrics for Logistic Regression, Random Forest, and Linear SVM. All three models substantially outperform the Majority Baseline.
+      <br/><span style="font-family:var(--font-mono);font-size:.78rem;">visuals/figures/03_model_comparison_panel.png</span>
     </div>
   </div>
 
-  <div id="rq3" class="rq-container">
-    <div class="rq-header">
-      <div class="rq-number">Research Question 3</div>
-      <div class="rq-question">How does the performance of different machine learning algorithms compare in predicting product ratings, and which model provides the highest predictive accuracy?</div>
+  <div class="stat-row">
+    <div class="stat"><span class="stat-value">0.9085</span><div class="stat-label">Linear SVM ROC-AUC</div></div>
+    <div class="stat"><span class="stat-value">0.8658</span><div class="stat-label">Random Forest Balanced Acc.</div></div>
+    <div class="stat"><span class="stat-value">0.7684</span><div class="stat-label">Logistic Reg. Macro F1</div></div>
+    <div class="stat"><span class="stat-value">5,000</span><div class="stat-label">Stratified Reviews Used</div></div>
+  </div>
+
+  <div class="answer-box">
+    <p>Product ratings can be predicted accurately using customer review content, aspect-based sentiment information, and product-related attributes. All evaluated models achieved strong predictive performance, with ROC-AUC values above <mark>0.90</mark>. Linear SVM achieved the highest ROC-AUC score (<mark>0.9085</mark>) and was selected as the final prediction model.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ RQ2 ═══════════════════ -->
+<div id="rq2" class="section reveal">
+  <div class="section-label">04 — Research Question 2</div>
+
+  <div class="rq-header" style="--accent: #7eb8c9;">
+    <div class="rq-number" style="color:var(--accent2);">RQ2</div>
+    <div class="rq-question">Do users give higher ratings to products when their personal characteristics are aligned with product highlights?</div>
+  </div>
+
+  <div class="rq-grid">
+    <div class="rq-card">
+      <div class="rq-card-label">Methodology</div>
+      <h3>Rule-Based User–Product Alignment</h3>
+      <p>A binary feature <code style="color:var(--accent2)">user_product_alignment</code> was created by matching skin-related user characteristics to product attributes — e.g., dry skin with hyaluronic acid, oily skin with acid-based products, sensitive skin with fragrance-free formulas.</p>
     </div>
-    <div class="rq-body">
-      <div class="rq-subgrid">
-        <div class="rq-block-card methodology">
-          <div class="rq-block-label">Methodology</div>
-          <h4>Multi-Classifier Benchmark</h4>
-          <p>Tested structural performance differences between ensemble learning (Random Forest) and hyperplane division models (SVM).</p>
-        </div>
-        <div class="rq-block-card experiments">
-          <div class="rq-block-label">Experiments</div>
-          <h4>Undersampled Balancing</h4>
-          <p>Standardized test conditions using precise 50/50 balanced data targets to avoid representation bias across metrics.</p>
-        </div>
-        <div class="rq-block-card results">
-          <div class="rq-block-label">Results</div>
-          <h4>Metric-Specific Leaders</h4>
-          <p>Random Forest excelled in raw accuracy balances; Logistic Regression scored high F1 limits; Linear SVM led total ROC areas.</p>
-        </div>
-        <div class="rq-block-card interpretation">
-          <div class="rq-block-label">Interpretation</div>
-          <h4>High-Dimensional Robustness</h4>
-          <p>Linear SVM models show superior consistency when handling high-dimensional text fields combined with metadata parameters.</p>
-        </div>
-      </div>
+    <div class="rq-card">
+      <div class="rq-card-label">Experiments</div>
+      <h3>Aligned vs. Non-Aligned Group Comparison</h3>
+      <p>Dataset split into two groups: Aligned (1) and Not Aligned (0). For each group, total review count and mean rating calculated to determine whether alignment systematically produces higher ratings.</p>
+    </div>
+    <div class="rq-card">
+      <div class="rq-card-label">Interpretation</div>
+      <h3>Personalization Drives Satisfaction</h3>
+      <p>Compatibility between user characteristics and product attributes meaningfully influences satisfaction. This supports the value of personalization in cosmetic recommendation systems. Larger aligned samples would further validate this finding.</p>
+    </div>
+  </div>
 
-      <div class="table-wrap">
-        <div class="table-header">
-          <span class="table-icon">⚖️</span>
-          <span class="table-title">Table 1 — Target Class Proportions Pre &amp; Post Balancing</span>
-          <span class="table-sub">visuals/tables/table_1_class_distribution.csv</span>
-        </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th>Target Group Identity</th><th>Raw Volume</th><th>Raw Share</th><th>Balanced Volume</th><th>Balanced Share</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Negative / Neutral Feedback (Class 0)</td><td>3,960</td><td>79.2%</td><td>832 Samples</td><td>50.0%</td></tr>
-              <tr><td>Positive Efficacy Feedback (Class 1)</td><td>1,040</td><td>20.8%</td><td>832 Samples</td><td>50.0%</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <!-- Alignment Table -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <span class="table-icon">🎯</span>
+      <span class="table-title">Table 4 — RQ2 User–Product Alignment Analysis</span>
+      <span class="table-sub">visuals/tables/table_4_rq2_alignment_analysis.csv</span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Alignment Group</th><th>Review Count</th><th>Average Rating</th><th>Rating Difference</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-green">Aligned (1)</span></td>
+            <td>Smaller subset</td>
+            <td><strong>3.1231</strong></td>
+            <td><span class="badge badge-green">+1.31 higher</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-red">Not Aligned (0)</span></td>
+            <td>Larger subset</td>
+            <td><strong>1.8099</strong></td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p style="font-size:.82rem;color:var(--text-muted);margin-top:-.75rem;margin-bottom:2rem;">Source: <code>visuals/tables/table_4_rq2_alignment_analysis.csv</code> — generated by <code>scripts/basic_eda.py</code></p>
 
-      <div class="table-wrap">
-        <div class="table-header">
-          <span class="table-icon">🏆</span>
-          <span class="table-title">Table 3 — Granular Class-Specific Metric Breakdown</span>
-          <span class="table-sub">visuals/tables/table_3_class_performance.csv</span>
-        </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th>Model Configuration</th><th>C0 Prec</th><th>C0 Rec</th><th>C0 F1</th><th>C1 Prec</th><th>C1 Rec</th><th>C1 F1</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Majority Baseline Configuration</td><td>0.79</td><td>1.00</td><td>0.88</td><td>0.00</td><td>0.00</td><td>0.00</td></tr>
-              <tr><td>Logistic Regression Pipeline</td><td>0.98</td><td>0.82</td><td>0.89</td><td>0.53</td><td>0.92</td><td>0.67</td></tr>
-              <tr><td>Random Forest Ensemble</td><td>1.00</td><td>0.80</td><td>0.89</td><td>0.51</td><td>0.99</td><td>0.67</td></tr>
-              <tr><td>Linear Support Vector Machine</td><td>0.99</td><td>0.81</td><td>0.89</td><td>0.52</td><td>0.95</td><td>0.67</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <div class="stat-row">
+    <div class="stat"><span class="stat-value">3.12</span><div class="stat-label">Avg Rating — Aligned</div></div>
+    <div class="stat"><span class="stat-value">1.81</span><div class="stat-label">Avg Rating — Not Aligned</div></div>
+    <div class="stat"><span class="stat-value">+1.31</span><div class="stat-label">Rating Gap</div></div>
+  </div>
 
-      <div class="answer-box">
-        <p>The comparison shows that all machine learning models substantially outperform the Majority Baseline model. While each model excelled in a different evaluation metric, Random Forest achieved the highest Balanced Accuracy, Logistic Regression achieved the highest Macro F1-Score, and Linear SVM achieved the highest ROC-AUC score. Linear SVM provides the most stable and balanced overall behavior for high-dimensional text classification tasks. Its consistent precision-recall balance and strong generalization performance make it the preferred final model for this project.</p>
-      </div>
+  <div class="answer-box">
+    <p>Users tended to give higher ratings to products that were aligned with their personal characteristics. The aligned group achieved an average rating approximately <mark>1.31 points higher</mark> than the non-aligned group, indicating a strong positive relationship between user–product compatibility and customer satisfaction.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ RQ3 ═══════════════════ -->
+<div id="rq3" class="section reveal">
+  <div class="section-label">05 — Research Question 3</div>
+
+  <div class="rq-header" style="">
+    <div class="rq-number" style="color:var(--accent3);">RQ3</div>
+    <div class="rq-question">How does the performance of different machine learning algorithms compare in predicting product ratings, and which model provides the highest predictive accuracy?</div>
+  </div>
+
+  <div class="rq-grid">
+    <div class="rq-card">
+      <div class="rq-card-label">Methodology</div>
+      <h3>Controlled Multi-Model Evaluation</h3>
+      <p>Logistic Regression, Random Forest, and Linear SVM evaluated against a Majority Baseline, all using identical train/test splits, preprocessing pipeline, and feature sets. GridSearchCV with cross-validation for hyperparameter optimization.</p>
+    </div>
+    <div class="rq-card">
+      <div class="rq-card-label">Experiments</div>
+      <h3>Identical Conditions, Four Metrics</h3>
+      <p>All models trained on the same balanced dataset, evaluated on the same held-out test. Performance measured by Balanced Accuracy, Macro F1-Score, ROC-AUC, and class-level precision/recall.</p>
+    </div>
+    <div class="rq-card">
+      <div class="rq-card-label">Interpretation</div>
+      <h3>Linear SVM Best for TF-IDF Spaces</h3>
+      <p>Consistent with known strengths of linear models in high-dimensional sparse feature spaces. SVM's precision–recall balance and generalization performance make it the preferred final model.</p>
+    </div>
+  </div>
+
+  <!-- Class Distribution Table -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <span class="table-icon">⚖️</span>
+      <span class="table-title">Table 1 — Target Class Distribution Before and After Undersampling</span>
+      <span class="table-sub">visuals/tables/table_1_class_distribution.csv</span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Class</th><th>Before Undersampling</th><th>% (Before)</th><th>After Undersampling</th><th>% (After)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-red">Negative / Neutral (0)</span></td>
+            <td>Majority (79.2%)</td><td>79.2%</td>
+            <td>832 samples</td><td><span class="badge badge-green">50.0%</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-green">Positive (1)</span></td>
+            <td>Minority (20.8%)</td><td>20.8%</td>
+            <td>832 samples</td><td><span class="badge badge-green">50.0%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p style="font-size:.82rem;color:var(--text-muted);margin-top:-.75rem;margin-bottom:.5rem;">Source: <code>visuals/tables/table_1_class_distribution.csv</code></p>
+  <p style="font-size:.9rem;color:var(--text-muted);margin-bottom:2rem;">Undersampling was applied to the training set only. The majority class was reduced to match the minority class size (832 samples each), producing a perfectly balanced training distribution while preserving the original test set structure.</p>
+
+  <!-- Class Performance Table -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <span class="table-icon">🔍</span>
+      <span class="table-title">Table 3 — Class-Based Model Performance Analysis</span>
+      <span class="table-sub">visuals/tables/table_3_class_performance.csv</span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Class 0 Precision</th><th>Class 0 Recall</th><th>Class 0 F1</th>
+            <th>Class 1 Precision</th><th>Class 1 Recall</th><th>Class 1 F1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Majority Baseline</td>
+            <td>~0.79</td><td>1.00</td><td>~0.88</td>
+            <td><span class="badge badge-red">0.00</span></td><td><span class="badge badge-red">0.00</span></td><td><span class="badge badge-red">0.00</span></td>
+          </tr>
+          <tr>
+            <td>Logistic Regression</td>
+            <td>0.97</td><td>0.74</td><td>0.84</td>
+            <td><span class="badge badge-gold">0.53 ★</span></td><td>0.90</td><td>0.67</td>
+          </tr>
+          <tr>
+            <td>Random Forest</td>
+            <td>1.00</td><td>0.72</td><td>0.84</td>
+            <td>0.50</td><td><span class="badge badge-gold">0.99 ★</span></td><td>0.66</td>
+          </tr>
+          <tr>
+            <td>Linear SVM</td>
+            <td>0.98</td><td>0.73</td><td>0.84</td>
+            <td>0.52</td><td>0.93</td><td><span class="badge badge-green">0.67</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p style="font-size:.82rem;color:var(--text-muted);margin-top:-.75rem;margin-bottom:2rem;">Source: <code>visuals/tables/table_3_class_performance.csv</code> — generated by <code>scripts/basic_eda.py</code></p>
+
+  <!-- Figure -->
+  <div class="figure-card">
+    <img src="visuals/figures/03_model_comparison_panel.png" alt="Model comparison panel — ROC curves for all ML models"/>
+    <div class="figure-caption">
+      <strong>Figure 2.</strong> Model comparison panel — detailed ROC analysis confirming that all three machine learning models provide strong discrimination between positive and negative/neutral ratings. Linear SVM achieves the highest AUC of 0.9085.
+      <br/><span style="font-family:var(--font-mono);font-size:.78rem;">visuals/figures/03_model_comparison_panel.png</span>
+    </div>
+  </div>
+
+  <div class="answer-box">
+    <p>Linear SVM achieved the highest ROC-AUC score (<mark>0.9085</mark>), making it the most suitable model for rating prediction. All machine learning models substantially outperformed the Majority Baseline. While each model excelled in a different metric — Random Forest in Balanced Accuracy, Logistic Regression in Macro F1 — SVM demonstrated the most reliable overall behavior, particularly in high-dimensional TF-IDF feature spaces.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ DISCUSSION ═══════════════════ -->
+<div id="discussion" class="section reveal">
+  <div class="section-label">06 — Overall Discussion</div>
+  <h2 class="section-title">Synthesis &amp; Key Findings</h2>
+
+  <div class="card-grid" style="margin: 2rem 0;">
+    <div class="card">
+      <div class="card-title">🔗 Integrated Framework</div>
+      <p>By combining transformer-based sentiment analysis (DeBERTa ABSA) with classical machine learning, the project demonstrates that hybrid NLP–ML pipelines can outperform either approach alone in real-world product rating prediction tasks.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">📈 Consistent Model Quality</div>
+      <p>All evaluated models significantly outperformed the Majority Baseline. While no single model dominated every metric, the collective results confirm that customer reviews and product features carry substantial predictive information about satisfaction.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">🎯 Personalization Matters</div>
+      <p>The user–product alignment analysis revealed that matched products received ~1.31 points higher average ratings, highlighting the business value of personalization in recommendation systems and customer experience management.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">⚖️ Class Imbalance Strategy</div>
+      <p>Controlled undersampling combined with imbalance-aware evaluation metrics (ROC-AUC, Balanced Accuracy, Macro F1) prevented dominant-class bias while enabling fair comparison across models.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-label">Limitations</div>
+  <div class="limit-grid">
+    <div class="limit-card">
+      <h3>Computational Constraints</h3>
+      <p>The full 797,779-review dataset could not be processed due to transformer-based ABSA compute costs. Results are based on a stratified 5,000-review sample. Cloud GPU resources could enable full-dataset analysis.</p>
+    </div>
+    <div class="limit-card">
+      <h3>Limited Alignment Observations</h3>
+      <p>The aligned group contained substantially fewer observations than the non-aligned group. Although the rating difference was substantial, larger aligned samples are needed for stronger statistical evidence.</p>
+    </div>
+    <div class="limit-card">
+      <h3>Rule-Based Alignment</h3>
+      <p>The alignment feature used predefined compatibility rules. More advanced recommendation approaches (collaborative filtering, neural embedding similarity) could better capture complex user–product relationships.</p>
+    </div>
+    <div class="limit-card">
+      <h3>Model Trade-Offs</h3>
+      <p>Positive-class precision remained lower than recall across all models, indicating some false positive predictions. Advanced sampling techniques, ensemble methods, or cost-sensitive learning could improve this further.</p>
     </div>
   </div>
 </div>
 
-<div class="divider"></div>
+<!-- ═══════════════════ REPRODUCIBILITY ═══════════════════ -->
+<div id="reproduce" class="section reveal">
+  <div class="section-label">07 — Reproducibility</div>
+  <h2 class="section-title">Reproduce the Full Analysis</h2>
+  <p class="section-intro">Follow these steps in order to reproduce all tables, figures, and model results presented on this page.</p>
 
-<div id="discussion" class="section" style="border-left: 4px solid var(--accent3);">
-  <div class="section-label">04 — Comprehensive Review</div>
-  <h2 class="section-title">Discussion &amp; System Limitations</h2>
-  <p class="section-intro">An objective evaluation of our experimental project findings, operational parameters, and avenues for model improvement.</p>
+  <div class="divider"></div>
 
-  <div class="card-grid" style="grid-template-columns: 1fr 1fr;">
-    <div class="card" style="border-top: 4px solid var(--accent);">
-      <div class="card-title">Project Discussion Insights</div>
-      <p style="margin-bottom:1rem;">Our modeling successfully demonstrates that unstructured platform reviews contain strong predictive features for consumer behavior metrics. Integrating specialized sentiment features alongside structured catalog lists improves classification stability.</p>
-      <p>The practical verification of personalization rules shows clear correlation gains. User satisfaction metrics increase when product features align with personal parameters, proving the value of custom recommendation engines.</p>
+  <!-- Repository -->
+  <div class="repo-block" style="margin-bottom:2rem;">
+    <div class="repo-text">
+      <h3>GitHub Repository</h3>
+      <p>Complete project including source code, outputs, and documentation.</p>
+      <a class="repo-url" href="https://github.com/BILGI-IE-423/ie423-2025-2026-termproject-wizards-of-data" target="_blank">
+        github.com/BILGI-IE-423/ie423-2025-2026-termproject-wizards-of-data
+      </a>
     </div>
-    <div class="card" style="border-top: 4px solid var(--accent3);">
-      <div class="card-title" style="color:var(--accent3);">Identified Constraints</div>
-      <p style="margin-bottom:1rem;"><span class="badge badge-purple">Hardware Limits</span> Heavy compute requirements for transformer models limited our training scope to a stratified sample of 5,000 reviews rather than processing all 797,779 database rows locally.</p>
-      <p style="margin-bottom:1rem;"><span class="badge badge-purple">Sample Sparsity</span> Personalized subset checks yielded lower sample counts than standard metadata lines, warranting expanded data scopes in future runs.</p>
-      <p><span class="badge badge-purple">Precision Disparities</span> Models showed lower positive-class precision than recall, indicating occasional false-positive classifications for neutral test comments.</p>
-    </div>
+    <a href="https://github.com/BILGI-IE-423/ie423-2025-2026-termproject-wizards-of-data" target="_blank" class="repo-btn">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      Open Repository
+    </a>
   </div>
-</div>
 
-<div class="divider"></div>
+  <!-- Installation -->
+  <h3 style="font-family:var(--font-serif);font-size:1.3rem;margin-bottom:1rem;margin-top:2rem;">Installation</h3>
+  <div class="code-label">bash</div>
+  <div class="code-block">
+    <span class="comment"># 1. Clone the repository</span><br/>
+    <span class="cmd">git clone</span> <span class="string">https://github.com/BILGI-IE-423/ie423-2025-2026-termproject-wizards-of-data.git</span><br/><br/>
+    <span class="comment"># 2. Navigate to the project directory</span><br/>
+    <span class="cmd">cd</span> <span class="arg">ie423-2025-2026-termproject-wizards-of-data</span><br/><br/>
+    <span class="comment"># 3. Install dependencies</span><br/>
+    <span class="cmd">pip install</span> <span class="arg">-r requirements.txt</span><br/><br/>
+    <span class="comment"># Or install manually (Python 3.9+)</span><br/>
+    <span class="cmd">pip install</span> <span class="arg">pandas numpy matplotlib seaborn scikit-learn transformers torch joblib</span>
+  </div>
 
-<div id="reproduce" class="section" style="border-left: 4px solid var(--accent);">
-  <div class="section-label">05 — Reproducibility Directory</div>
-  <h2 class="section-title">Reproducibility Instructions</h2>
-  <p class="section-intro">Follow these sequential environment and script instructions to reproduce our project data pipeline and outputs.</p>
+  <!-- Dataset placement -->
+  <h3 style="font-family:var(--font-serif);font-size:1.3rem;margin-bottom:1rem;margin-top:2rem;">Dataset Placement</h3>
+  <div class="code-label">directory structure</div>
+  <div class="code-block">
+    <span class="arg">data/</span><br/>
+    <span class="text-muted">└──</span> <span class="string">raw/</span>          <span class="comment">← place all Kaggle CSV files here (original filenames)</span><br/>
+    <span class="arg">scripts/</span><br/>
+    <span class="arg">visuals/</span><br/>
+    <span class="text-muted">├──</span> <span class="string">figures/</span>      <span class="comment">← generated visualization outputs</span><br/>
+    <span class="text-muted">└──</span> <span class="string">tables/</span>       <span class="comment">← generated CSV tables</span>
+  </div>
 
+  <!-- Script execution -->
+  <h3 style="font-family:var(--font-serif);font-size:1.3rem;margin-bottom:1.25rem;margin-top:2rem;">Script Execution Order</h3>
   <div class="step-list">
     <div class="step-item">
       <div class="step-num">1</div>
       <div class="step-content">
-        <h3>Environment Alignment &amp; Dependency Installation</h3>
-        <p>Clone the core repository and initialize software requirements using standard package managers:</p>
-        <div class="code-block">
-          <span class="comment"># Clone target institutional codebase</span><br/>
-          <span class="cmd">git clone</span> <span class="arg">https://github.com/BILGI-IE-423/ie423-2025-2026-termproject-wizards-of-data.git</span><br/>
-          <span class="cmd">cd</span> <span class="arg">ie423-2025-2026-termproject-wizards-of-data</span><br/><br/>
-          <span class="comment"># Deploy foundational Python library stacks</span><br/>
-          <span class="cmd">pip install</span> -r <span class="string">requirements.txt</span>
+        <h3>Data Loading — <code style="color:var(--accent2);">load_data.py</code></h3>
+        <p>Extracts, loads, and merges raw Sephora review files and product information into a unified dataset.</p>
+        <div class="code-label" style="margin-top:.75rem;">bash</div>
+        <div class="code-block" style="margin:0;padding:1rem;">
+          <span class="cmd">python</span> <span class="arg">load_data.py</span>
         </div>
       </div>
     </div>
-
     <div class="step-item">
       <div class="step-num">2</div>
       <div class="step-content">
-        <h3>Pipeline Execution Workflow Order</h3>
-        <p>Run script assets in the specified sequence to build data directories and compile visualization outputs:</p>
-        <div class="code-block">
-          <span class="comment"># Pipeline Step 1: Unpack and consolidate source review inputs</span><br/>
-          <span class="cmd">python</span> <span class="string">load_data.py</span><br/><br/>
-          <span class="comment"># Pipeline Step 2: Run engineering, cleaning, and model optimization</span><br/>
-          <span class="cmd">python</span> <span class="string">preprocess.py</span><br/><br/>
-          <span class="comment"># Pipeline Step 3: Automatically output target tables and performance figures</span><br/>
-          <span class="cmd">python</span> <span class="string">basic_eda.py</span>
+        <h3>Preprocessing &amp; Model Training — <code style="color:var(--accent2);">preprocess.py</code></h3>
+        <p>Data cleaning → feature engineering → DeBERTa ABSA → user–product alignment → class balancing → GridSearchCV → model training.</p>
+        <div class="code-label" style="margin-top:.75rem;">bash</div>
+        <div class="code-block" style="margin:0;padding:1rem;">
+          <span class="cmd">python</span> <span class="arg">preprocess.py</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Output Generation — <code style="color:var(--accent2);">basic_eda.py</code></h3>
+        <p>Generates all tables and visualizations: ABSA reports, class distribution, model comparison, alignment analysis, correlation charts, and ROC curve figures.</p>
+        <div class="code-label" style="margin-top:.75rem;">bash</div>
+        <div class="code-block" style="margin:0;padding:1rem;">
+          <span class="cmd">python</span> <span class="arg">basic_eda.py</span>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="repo-block">
-    <div class="repo-text">
-      <h3>Project Workspace Code Hub</h3>
-      <p>Review raw analytical code, feature generation scripts, and database assets on our GitHub repository:</p>
-      <span class="repo-url">github.com/BILGI-IE-423/ie423-2025-2026-termproject-wizards-of-data</span>
-    </div>
-    <a href="https://github.com/BILGI-IE-423/ie423-2025-2026-termproject-wizards-of-data" target="_blank" class="repo-btn">Open Project Hub ↗</a>
+  <div class="card" style="margin-top:2rem;border-color:rgba(30,122,58,.2);">
+    <div class="card-title" style="color:var(--green);">✓ After Running All Scripts</div>
+    <p>All tables and figures used throughout this project website will be generated automatically in <code style="color:var(--accent2)">visuals/tables/</code> and <code style="color:var(--accent2)">visuals/figures/</code>. The main analyses, visualizations, and model evaluation results will be fully reproduced.</p>
   </div>
 </div>
 
 </main>
 
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
 <footer>
-  <p>&copy; 2026 Wizards of Data. Built for the IE423 Term Project. All rights reserved.</p>
+  <p style="margin-bottom:.5rem;">
+    <strong style="color:var(--text);">Customer Satisfaction in Sephora Products</strong> · IE423 Term Project · 2025–2026
+  </p>
+  <p style="margin-bottom:.5rem;">
+    İlke Bakangil · Sıla Doğan · Avsu Evren · Yağmur Battal
+  </p>
+  <p>
+    <a href="https://github.com/BILGI-IE-423/ie423-2025-2026-termproject-wizards-of-data" target="_blank">GitHub Repository</a>
+    &nbsp;·&nbsp;
+    <a href="https://www.kaggle.com/datasets/nadyinky/sephora-products-and-skincare-reviews" target="_blank">Kaggle Dataset</a>
+    &nbsp;·&nbsp;
+    Istanbul Bilgi University
+  </p>
 </footer>
 
+<script>
+  // ─── Scroll-reveal ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ─── Stagger pipeline steps ───
+  document.querySelectorAll('.pipeline-step').forEach((el, i) => {
+    el.style.transitionDelay = (i * 60) + 'ms';
+    el.classList.add('reveal');
+    observer.observe(el);
+  });
+
+  // ─── Nav active link ───
+  const sections = document.querySelectorAll('[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
 </body>
 </html>
