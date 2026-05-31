@@ -1,0 +1,5 @@
+Model Architecture,Balanced Accuracy,Macro F1-Score,ROC-AUC Score,Mean Train CV F1
+Majority Baseline,0.5000,0.4420,0.5000,0.3331 (±0.000)
+Logistic Regression,0.8447,0.7684,0.9041,0.8450 (±0.012)
+Random Forest,0.8658,0.7578,0.9077,0.8553 (±0.019)
+SVM (Linear),0.8473,0.7610,0.9085,0.8482 (±0.010)

@@ -1,0 +1,9 @@
+Model Architecture,Target Class,Precision,Recall,F1-Score,Test Support
+Majority Baseline,Negative/Neutral (0),0.79,1.00,0.88,792
+Majority Baseline,Positive (1),0.00,0.00,0.00,208
+Logistic Regression,Negative/Neutral (0),0.97,0.79,0.87,792
+Logistic Regression,Positive (1),0.53,0.90,0.67,208
+Random Forest,Negative/Neutral (0),1.00,0.74,0.85,792
+Random Forest,Positive (1),0.50,0.99,0.67,208
+SVM (Linear),Negative/Neutral (0),0.97,0.77,0.86,792
+SVM (Linear),Positive (1),0.51,0.92,0.66,208

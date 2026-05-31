@@ -1,0 +1,4 @@
+Class Category,Raw Count (Train),Raw Ratio,Balanced Count (Undersampling),Balanced Ratio
+Negative/Neutral (1-2-3),3168,79.2%,832,50.0%
+Positive (4-5),832,20.8%,832,50.0%
+Total,4000,100%,1664,100%
