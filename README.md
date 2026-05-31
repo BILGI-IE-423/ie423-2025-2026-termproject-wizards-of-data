@@ -13,9 +13,22 @@ Dataset: Sephora Products and Skincare Reviews
 Source: https://www.kaggle.com/datasets/nadyinky/sephora-products-and-skincare-reviews/data
 
 ## Project Objective
-The objective of this project is to analyze and predict customer satisfaction as reflected by product ratings in the Sephora Products and Skincare Reviews dataset. The project aims to integrate structured data, such as product attributes, brand information, and ingredient details, with unstructured textual data from customer reviews, which will be transformed into sentiment scores using natural language processing techniques. By combining these diverse feature groups, the study seeks to identify the key factors that drive product ratings and to develop predictive models that can accurately estimate customer satisfaction. 
 
-In addition, the project investigates the alignment between user characteristics—such as skin type, skin tone, and hair color—and product highlights, examining whether personalized matches lead to higher ratings. Different machine learning algorithms will be applied and compared to determine which methods perform best in predicting product ratings, while careful feature engineering and data preprocessing will ensure meaningful and interpretable results. Ultimately, this project aims not only to build predictive models, but also to provide insights into the relative importance of various factors, uncover patterns in customer rating behavior, and understand the role of personalization in shaping user satisfaction.
+This project develops an end-to-end machine learning pipeline for analyzing customer sentiment in Sephora skincare reviews. By combining review text, Aspect-Based Sentiment Analysis (ABSA), product attributes, ingredient information, and user characteristics, the project aims to identify the key factors influencing customer satisfaction and evaluate how effectively customer sentiment can be predicted.
+
+In addition to predictive modeling, the study investigates the impact of user–product compatibility on customer sentiment and explores common patterns among misclassified reviews to better understand the strengths and limitations of sentiment prediction models.
+
+### Research Questions
+
+**RQ1 — Sentiment Prediction**
+To what extent can customer sentiment be predicted using review text, product attributes, ingredient information, and aspect-based sentiment features?
+
+**RQ2 — User–Product Compatibility**
+Does alignment between user characteristics (such as skin type, skin tone, and hair-related attributes) and product features lead to more positive customer sentiment?
+
+**RQ3 — Prediction Errors and Model Limitations**
+What common characteristics are observed among misclassified reviews, and what do these errors reveal about the limitations of sentiment prediction models?
+
 
 ## Repository Structure
 ```text
